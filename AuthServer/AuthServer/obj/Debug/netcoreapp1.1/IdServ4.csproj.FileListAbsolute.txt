@@ -1,0 +1,9 @@
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\bin\Debug\netcoreapp1.1\IdServ4.deps.json
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\bin\Debug\netcoreapp1.1\IdServ4.runtimeconfig.json
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\bin\Debug\netcoreapp1.1\IdServ4.runtimeconfig.dev.json
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\bin\Debug\netcoreapp1.1\IdServ4.dll
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\bin\Debug\netcoreapp1.1\IdServ4.pdb
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\obj\Debug\netcoreapp1.1\IdServ4.csprojResolveAssemblyReference.cache
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\obj\Debug\netcoreapp1.1\IdServ4.AssemblyInfo.cs
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\obj\Debug\netcoreapp1.1\IdServ4.dll
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\obj\Debug\netcoreapp1.1\IdServ4.pdb

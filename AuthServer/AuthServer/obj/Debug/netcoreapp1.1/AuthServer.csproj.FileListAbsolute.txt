@@ -1,0 +1,9 @@
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\bin\Debug\netcoreapp1.1\AuthServer.deps.json
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\bin\Debug\netcoreapp1.1\AuthServer.runtimeconfig.json
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\bin\Debug\netcoreapp1.1\AuthServer.runtimeconfig.dev.json
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\bin\Debug\netcoreapp1.1\AuthServer.dll
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\bin\Debug\netcoreapp1.1\AuthServer.pdb
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\obj\Debug\netcoreapp1.1\AuthServer.csprojResolveAssemblyReference.cache
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\obj\Debug\netcoreapp1.1\AuthServer.AssemblyInfo.cs
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\obj\Debug\netcoreapp1.1\AuthServer.dll
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\obj\Debug\netcoreapp1.1\AuthServer.pdb
