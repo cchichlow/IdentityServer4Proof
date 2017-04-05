@@ -1,0 +1,9 @@
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIDClientApp\OpenIDClientApp\bin\Debug\netcoreapp1.1\OpenIDClientApp.deps.json
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIDClientApp\OpenIDClientApp\bin\Debug\netcoreapp1.1\OpenIDClientApp.runtimeconfig.json
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIDClientApp\OpenIDClientApp\bin\Debug\netcoreapp1.1\OpenIDClientApp.runtimeconfig.dev.json
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIDClientApp\OpenIDClientApp\bin\Debug\netcoreapp1.1\OpenIDClientApp.dll
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIDClientApp\OpenIDClientApp\bin\Debug\netcoreapp1.1\OpenIDClientApp.pdb
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIDClientApp\OpenIDClientApp\obj\Debug\netcoreapp1.1\OpenIDClientApp.csprojResolveAssemblyReference.cache
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIDClientApp\OpenIDClientApp\obj\Debug\netcoreapp1.1\OpenIDClientApp.AssemblyInfo.cs
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIDClientApp\OpenIDClientApp\obj\Debug\netcoreapp1.1\OpenIDClientApp.dll
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIDClientApp\OpenIDClientApp\obj\Debug\netcoreapp1.1\OpenIDClientApp.pdb
