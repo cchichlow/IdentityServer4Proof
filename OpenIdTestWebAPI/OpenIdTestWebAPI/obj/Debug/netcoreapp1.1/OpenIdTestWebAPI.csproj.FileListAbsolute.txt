@@ -1,0 +1,9 @@
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIdTestWebAPI\OpenIdTestWebAPI\bin\Debug\netcoreapp1.1\OpenIdTestWebAPI.deps.json
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIdTestWebAPI\OpenIdTestWebAPI\bin\Debug\netcoreapp1.1\OpenIdTestWebAPI.runtimeconfig.json
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIdTestWebAPI\OpenIdTestWebAPI\bin\Debug\netcoreapp1.1\OpenIdTestWebAPI.runtimeconfig.dev.json
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIdTestWebAPI\OpenIdTestWebAPI\bin\Debug\netcoreapp1.1\OpenIdTestWebAPI.dll
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIdTestWebAPI\OpenIdTestWebAPI\bin\Debug\netcoreapp1.1\OpenIdTestWebAPI.pdb
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIdTestWebAPI\OpenIdTestWebAPI\obj\Debug\netcoreapp1.1\OpenIdTestWebAPI.AssemblyInfo.cs
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIdTestWebAPI\OpenIdTestWebAPI\obj\Debug\netcoreapp1.1\OpenIdTestWebAPI.dll
+c:\users\chichlow\documents\visual studio 2017\Projects\OpenIdTestWebAPI\OpenIdTestWebAPI\obj\Debug\netcoreapp1.1\OpenIdTestWebAPI.pdb
+C:\Users\chichlow\Documents\Visual Studio 2017\Projects\OpenIdTestWebAPI\OpenIdTestWebAPI\obj\Debug\netcoreapp1.1\OpenIdTestWebAPI.csprojResolveAssemblyReference.cache
