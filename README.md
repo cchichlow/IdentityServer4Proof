@@ -18,7 +18,7 @@ Proof of concept for Authentication and Authorization with IdentityServer 4
 </div>
 <div>
 <h2>Grundlagen zu OAuth 2.0 und OpenID Connect</h2>
-<h4>OAuth 2.0 - kurz und knapp</h4>
+<h3>OAuth 2.0 - kurz und knapp</h3>
 <p>OAuth 2.0 ist ein Standard, in dem Verfahren für begrenzenten Zugriff auf HTTP-Ressourcen definiert werden. Dabei kann ein sogenannter Ressource-Owner seine Ressourcen kontrolliert an Clients und Dritte bereitstellen. Ohne OAuth würde dies über die Weitergabe der persönlichen Anmeldedaten des Ressource-Owners erfolgen, womit jedoch zum einen Sicherheitsdefiziete entstehen, da der Client oder Dritte dann vollen Zugriff auf alle Ressourcen des Ressource-Owners erhält und alle damit verbundenen Rechte. Zudem müssten, um dem Client die Rechte wieder zu entziehen, die Anmeldedaten geändert werden, was jedoch zum Entzug der Rechte für alle autorisierten Clients führt. Deshalb kommt OAuth zum Einsatz und bringt Verfahren, mit denen diese Probleme gelöst werden.<br/>
 Im Standard ist ein Protokollfluss definiert, der Zugriffe mittels Token kontrolliert.<br/>
 Es sind vier Rollen am Protokollfluss beteiligt:</p>
@@ -40,7 +40,7 @@ Der <b>Client</b> ist die Anwendung, die auf die geschützten Ressourcen zugreif
 Der Ressourcenserver und Autorisierungsserver können auf dem gleichen Server laufen, müssen also nicht getrennt verwaltet werden.</p>
 <p>Der beschriebene Protokollfluss ist nur eine schematische Darstellung und wird über Genehmigungsverfahren realisiert, von denen die über einen Autorisierungscode und die implizite Genehmigung, die Verfahren sind, die am häufigsten Anwendung finden. Beim <b>Autorisierungscode</b> wird der Benutzer vom Client an den Autorisierungsserver weitergeleitet und autorisiert dort den Client. Ist der Client erfolgreich autorisiert, erhält er einen Autorisierungscode, mit dem er ein Access Token beim Autorisierungsserver anfragen kann. Erst mit dem Access Token werden Ressourcen beim Ressourcenserver angefragt. Das implizite Genehmigungsverfahren ist im Prinzip eine Vereinfachung des Autorisierungscode-Verfahrens. Dabei wird dem Client statt einem Autorisierungscode direkt ein Access Token erstellt. Das implizite Genehmigungsverfahren eignet sich besonders für in-browser Clients oder Clients die in einer Skripsprache (wie JavaScript) geschrieben sind.<br/><br/></p>
 
-<h4>OpenID Connect</h4>
+<h3>OpenID Connect</h3>
 <p>OAuth 2.0 ist ein reines Autorisierungsverfahren und bietet keine Mechanismen für eine sicher Authentifizierung. Deshalb wurde mit OpenID ein Protokoll entwickelt, welches auf dem OAuth 2.0 Standard aufsetzend Authentifizierungsmechanismen für einen sicheren Umgang mit Benutzerdaten und Single-Sign-On im Netz ermöglicht. <b>OpenID Connect</b> ist eine OpenID Spezifikation, die als Identitätsschicht auf dem O-Auth 2.0 Protokoll mit dem JWT Token Format aufbaut. Die <b>Genehmigungsverfahren</b> bleiben die gleichen, nur, dass nun auch Benutzerdaten wie Ressourcen erfragt werden können. Diese werden als <b>ID Token</b> zurückgegeben und enthalten unter anderem Informationen über den Benutzer und die Authentifizierung eines bestimmten Clients. Ein ID Token ist nur in der Kombination aus Endanwender, Client und dem OpenID Provider gültig. Damit darf ein ID Token für den gleichen Endanwender nicht von un-terschiedlichen Clients akzeptiert werden.</p>
 <p>Im OpenID Connect Protokollfluss für den Erhalt von Benutzerdaten werden folgende Rollen unterschieden:</p>
 <ul>
@@ -69,10 +69,44 @@ Dies stellt eine entscheidende Einschränkung dar, ist doch das .NET Core Framew
   <li>Web API</li>
 </ul>
 
-<p>Der AuthServer ist ein OpenID Provider. Er führt Informationen zu allen registrierten Usern, den zu schützenden Ressourcen und den autorisierten Clients. Die Client-Anwendung ist eine Anwendung mit Ressourcen, die über den AuthServer geschützt werden. Die Web API ist eine Schnittstelle, die den Zugriff auf geschützte Ressourcen ebenfalls über den AuthServer verwaltet.</p>
+<p>Der <b>AuthServer</b> ist ein OpenID Provider. Er führt Informationen zu allen registrierten Usern, den zu schützenden Ressourcen und den autorisierten Clients. Die <b>Client-Anwendung</b> ist eine Anwendung mit teilweise frei verfügbaren und teilweise über den AuthServer geschützten Ressourcen. Die <b>Web API</b> ist eine Schnittstelle, die den Zugriff auf geschützte Ressourcen ebenfalls über den AuthServer verwaltet. Ein Client, der Ressourcen bei der Web API anfragt, muss erst über den Autorisierungsserver autorisiert werden und erhält dann die benötigten Ressourcen.</p>
+<p>Alle drei Komponenten sind für das .NET Core Framework implementiert und nur auf diesem Lauffähig.</p>
 </div>
 
 ![Kommunikation zwischen Entitäten](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/Communication_IdServ4Proof.jpg)
+
+<div>
+<p>Im Abschnitt "OAuth kurz und knapp" wurden die zwei gängigsten Genehmigungsverfahren beschrieben, das Verfahreung über einen Autorisierungscode und das implizite Verfahren. Ein weiteres Verfahren stellt die Genehmigung über die Benutzerdaten des Ressourceninhabers dar.</p>
+<p>Aber sind wir damit nicht wieder auf dem Level der Unsicherheit, bei dem wir die eingangs genannten Vorteile von OAuth über Bord werfen? Nein. Denn die Benutzerdaten werden nur ein mal an den Autorisierungsserver gesendet und ein Token im Gegenzug erhalten. Der Client muss damit die Benutzerdaten nicht persistent speichern, sondern nur den Token. Außerdem bleiben mit dem Token auch die Vorteile der begrenzente und verwaltbaren Zugriffe erhalten.</p>
+<h3>AuthServer</h3>
+<p> Im AuthServer sind die Clients in der Klasse <i>Clients</i> implementiert. Er bietet der Web API die eben beschriebene Zugriffsmöglichkeit über die Benutzerdaten des Ressourceninhabers. Die Client-Anwendung greift über den impliziten Fluss auf die geschützten Ressourcen zu. Alle Daten werden über das Identity Framework und einer SQLite Datenbank persisten gehalten. Beim Start des AuthServers werden alle Clients, Benutzer und Ressourcen in die Datenbank migriert, falls sie nicht bereits vorhanden sind. 
+</p>
+<h3>Client-Anwendung</h3>
+<p>Die Client-Anwendung ist ein initiales, mit Visual Studio 2017 erstelltes und modifiziertes ASP.NET Projekt für Webanwendungen. Die geschützte Ressource ist das Kontak-Formular. Mit einem Klick auf das Formular wird der Anwender auf die Login-Seite des Autorisierungsserver weitergeleitet und kann darin die Client-Anwendung autorisieren. Anschließend ist der Zugriff auf die Kontakt-Daten erlaubt.</p>
+<h3>Web API</h3>
+<p>Die Web API ist ein initiales, mit Visual Studio 2017 erstelltes und modifiziertes ASP.NET Projekt für Webschnittstellen. Die geschützte Ressource ist exemplarisch das Value-Objekt, welches eingangs zu Beispielzwecken mit dem Projekt erstellt wird. Der Zugriff erfolgt über die Benutzerdaten, indem zunächst ein Post-Request an den Autorisierungsserver gesendet wird, um ein Access Token zu erhalten. Der Content-Type Parameter im Header der Anfrage muss den Wert "x-www-form-urlencoded" haben. Außerdem müssen folgende Paramter im Body der Anfrage enthalten sein:</p>
+<ul>
+<li>grant_type</li>
+<li>username</li>
+<li>password</li>
+<li>client_id</li>
+<li>client_secret</li>
+<li>scope</li>
+</ul>
+<p>
+Demnach ist ein Client, der Ressourcen an der Web API anfragt, jede beliebige Anwendung, die über SSL geschütztes HTTP Anfragen senden kann. </p>
+<p>Für das aktuelle Projekt sind folgende key-value-Paare anzugeben:<br/>
+grant_type : password<br/>
+username : alice<br/>
+password : Password123!<br/>
+client_id : webApi<br/>
+client_secret : secret<br/>
+scope : openID<br/>
+<br/>
+Der Grant-Type entspricht dem Ressource-Owner Genehmigungsverfahren, welches im Autorisierungsserver für diesen Client definiert ist. Auch die Client-ID und das Client-Secret sind im Autorisierungsserver hinterlegt. Der Scope gibt an, auf welche Ressourcen der Client zugreifen möchte. Die möglichen Scopes sind im Autorisierungsserver definiert. Der Benutzername und das Passwort für den Benutzer sind im Falle des Ressource-Owner Genehmigungsverfahrens ebenfalls im Autorisierungsserver hinterlegt.
+Als Antwort erhält man ein Access Token, mit dem man die Ressourcen an der Web API anfragen kann. Die Web API prüft den Access Token beim Autorisierungsserver und gibt bei einem validen Access Token die gewünschten Ressourcen zurück.
+</p>
+</div>
 
 
 <div>
