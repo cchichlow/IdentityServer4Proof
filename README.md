@@ -23,6 +23,20 @@ Proof of concept for Authentication and Authorization with IdentityServer 4
 </div>
 <div>
 <h2>Überblick - Ein Flüchtiger Blick auf das Projekt</h2>
+<p>Das Projekt ist eine exemplarische Umsetzung verschiedener Authentifizierungs- und Autorisierungsverfahrens mit dem IdentityServer, welcher den OAuth-2.0-Standard und den offene Standard OpenID Connect implementiert.</p>
+<p>Das Projekt besteht aus den Komponenten:</p>
+<ul>
+<li>AuthServer<br/>Der Autorisierungsserver. Über Ihn werden Clients und Benutzer authentifiziert und Zugriffe auf Ressourcen autorisiert.</li>
+<li>WebAPIwithIS3<br/>Die Web API mit geschützten Ressourcen. Die Autorisierung der Zugriffe auf ihre geschützen Ressourcen delegiert sie an den Autorisieringsserver "AuthServer". Diese Web API läuft unter dem <i>Standard .NET Framework</i> und verwendet die Bibliothek <i>IdentityServer3</i> für die Kommunikation mit dem Autorisierungsserver.</li>
+<li>WebAPIwithIS3<br/>Die Web API mit geschützten Ressourcen. Die Autorisierung der Zugriffe auf ihre geschützen Ressourcen delegiert sie an den Autorisieringsserver "AuthServer". Diese Web API läuft unter dem <i>.NET Core</i> und verwendet die Bibliothek <i>IdentityServer4"</i> für die Kommunikation mit dem Autorisierungsserver.</li>
+<li>ClientAppWithIS4<br/>Eine in Visual Studio initial erstellte Webanwendung mit einem geschützten Kontaktfomular. Die Authentifizierung und Autorisierung werden über das implizite Genehmigungsverfahren mit dem Autorisierungsserver "AuthServer" umgesetzt. Die Webanwendung läuft unter dem .NET Core Framework und verwendet die Bibliothek IdentityServer4 für die Kommunikation mit dem Autorisierungsserver. </li>
+</ul>
+<p></p>
+
+
+
+
+
 </div>
 <div>
 <h2>Crashkurs: OAuth 2.0 und OpenID Connect</h2>
@@ -40,9 +54,7 @@ Proof of concept for Authentication and Authorization with IdentityServer 4
 
 <div>
 <h2>Einleitende Worte</h2>
-<p>Das Projekt ist eine exemplarische Umsetzung eines Authentifizierungs- und Autorisierungsverfahrens mit dem IdentityServer 4. Die dem IdentityServer zugrundeliegenden Standards sind zum einen der OAuth 2.0 Standard mit dem Open Authorization 2.0 Framework und der offene Standard OpenID Connect.</p>
-<p>Obwohl die Technologien für Authentifizierung und Autorisierung mit den genannten Standards einheitlich definiert sind, bleibt ein ernormer Aufwand für die Implementierung einer sicheren Architektur nach OAuth 2.0 und OpenID Connect ein enormer Aufwand. Es liegt im Interesse eines Softwareentwicklers, der die Funktionen lediglich verwenden und nicht erst implementieren möchte, ein Framework zu verwenden, welches ihm die Arbeit abnimmt.</p>
-<p>Im .NET Umfeld bietet der IdentityServer dabei einen entscheidenden Vorteil. Er implementiert beide Standards und erlaubt eine einfache Umsetzung von Single-Sign-On und Zugriffsbeschränkungen für Webapplikationen und -schnittstellen.</p>
+
 </div>
 <div>
 <h2>Grundlagen zu OAuth 2.0 und OpenID Connect</h2>
@@ -78,7 +90,9 @@ Der Ressourcenserver und Autorisierungsserver können auf dem gleichen Server la
 </ul>
 <p>Der OpenID Provider entspricht dabei dem Autorisierungsserver und dem Ressourcenserver aus dem vo OAuth bekannten Protokollfluss.</p>
 <p>Ein ID Token ist laut der Spezifikation ein Sicherheitstoken, welches Informationen zur Authentifizierung eines Endanwenders über einen Autorisierungsserver und weitere, angefragte Informationen enthält. Die Spezifikation definiert die Repräsentation des ID Token als JSON Web Token (JWT). Es enthält für alle OAuth 2.0 Informationsflüsse eine Reihe von benötigten, sowie optionalen Claims. Zusätzlich kann ein ID Token eige-ne definierte Claims enthalten, womit auch definiert ist, dass Claims, welche nicht er-kannt werden, server-, wie client-seitig, ignoriert werden müssen.<br/></p>
-<p>OpenID Connect (und damit implizit auch OAuth 2.0) sind vielfältig und in unterschiedlichen Sprachen implementiert. Im .NET Umfeld ist das am häufigsten Verwendete Framework der IdentityServer von Thinktecture. Die neueste Version, der IdentityServer 4, ist seit Ende 2016 auf dem Markt.</p>
+<p>Obwohl die Technologien für Authentifizierung und Autorisierung mit den genannten Standards einheitlich definiert sind, bleibt ein ernormer Aufwand für die Implementierung einer sicheren Architektur nach OAuth 2.0 und OpenID Connect ein enormer Aufwand. Es liegt im Interesse eines Softwareentwicklers, der die Funktionen lediglich verwenden und nicht erst implementieren möchte, ein Framework zu verwenden, welches ihm die Arbeit abnimmt.</p>
+<p>Damit wird unter anderem eine einfache Umsetzung von Single-Sign-On und Zugriffsbeschränkungen für Webapplikationen und -schnittstellen ermöglicht.</p>
+<p>OpenID Connect (und damit implizit auch OAuth 2.0) ist vielfältig und in unterschiedlichen Sprachen implementiert. Im .NET Umfeld ist das am häufigsten Verwendete Framework der IdentityServer von Thinktecture. Die neueste Version, der IdentityServer 4, ist seit Ende 2016 auf dem Markt.</p>
 </div>
 
 <div>
