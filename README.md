@@ -155,7 +155,7 @@ Dies stellt eine entscheidende Einschränkung dar, ist doch das .NET Core Framew
 <p>Alle drei Komponenten sind für das .NET Core Framework implementiert und nur auf diesem Lauffähig.</p>
 </div>
 
-![Kommunikation zwischen Entitäten](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/Communication_IdServ4Proof.jpg)
+![Kommunikation zwischen Entitäten](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/Communication_IdServ4Proof_small.jpg)
 
 <div>
 <p>Im Abschnitt "OAuth kurz und knapp" wurden die zwei gängigsten Genehmigungsverfahren beschrieben, das Verfahreung über einen Autorisierungscode und das implizite Verfahren. Ein weiteres Verfahren stellt die Genehmigung über die Benutzerdaten des Ressourceninhabers dar.</p>
