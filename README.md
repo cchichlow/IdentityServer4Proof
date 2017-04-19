@@ -35,7 +35,7 @@ Proof of concept for Authentication and Authorization with IdentityServer 4
 <br/><h2>Überblick - Ein Flüchtiger Blick auf das Projekt</h2>
 <p>Dieses Projekt ist eine exemplarische Umsetzung verschiedener Authentifizierungs- und Autorisierungsverfahrens mit dem IdentityServer, welcher den OAuth-2.0-Standard und den offene Standard OpenID Connect implementiert.</p>
 <br/>
-<p>Das Projekt besteht aus vier Komponenten:</p>
+<p>Das Projekt besteht aus den vier Komponenten:</p>
 <ul>
 <li>AuthServer<br/>Der Autorisierungsserver. Über Ihn werden Clients und Benutzer authentifiziert und Zugriffe auf Ressourcen autorisiert.</li>
 <li>WebAPIwithIS3<br/>Die Web API mit geschützten Ressourcen. Die Autorisierung der Zugriffe auf ihre geschützen Ressourcen delegiert sie an den Autorisieringsserver "AuthServer". Diese Web API läuft unter dem <i>Standard .NET Framework</i> und verwendet die Bibliothek <i>IdentityServer3</i> für die Kommunikation mit dem Autorisierungsserver.</li>
@@ -106,7 +106,7 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 
 <div>
 <br/><h3>OpenID Connect</h3>
-<p>OpenID Connect ist eine OpenID Spezifikation, die als Identitätsschicht auf dem O-Auth 2.0 Protokoll mit dem JWT Token Format aufbaut. Die <b>Genehmigungsverfahren</b> bleiben die gleichen, nur, dass nun auch Benutzerdaten wie Ressourcen erfragt werden können. Diese werden als <b>ID Token</b> zurückgegeben und enthalten unter anderem Informationen über den Benutzer und die Authentifizierung eines bestimmten Clients. Ein ID Token ist nur in der Kombination aus Endanwender, Client und dem OpenID Provider gültig. Damit darf ein ID Token für den gleichen Endanwender nicht von un-terschiedlichen Clients akzeptiert werden.</p>
+<p>OpenID Connect ist eine OpenID Spezifikation, die als Identitätsschicht auf dem O-Auth 2.0 Protokoll mit dem JWT Token Format aufbaut. Die Genehmigungsverfahren bleiben die gleichen, nur, dass nun auch Benutzerdaten wie Ressourcen erfragt werden können. Diese werden als ID Token zurückgegeben und enthalten unter anderem Informationen über den Benutzer und die Authentifizierung eines bestimmten Clients. Ein ID Token ist nur in der Kombination aus Endanwender, Client und dem OpenID Provider gültig. Damit darf ein ID Token für den gleichen Endanwender nicht von un-terschiedlichen Clients akzeptiert werden.</p>
 <p>Im OpenID Connect Protokollfluss für den Erhalt von Benutzerdaten werden folgende Rollen unterschieden:</p>
 <ul>
 <li>Endanwender</li>
@@ -118,12 +118,14 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 <br/>
 </div>
 
-![OAuth 2.0 Protokollfluss](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/OpenID_Protokollfluss_deut_small.png)
+![OpenID Connect Protokollfluss](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/OpenID_Protokollfluss_deut_small.png)
 
 <div>
 <p>Obwohl die Technologien für Authentifizierung und Autorisierung mit den genannten Standards einheitlich definiert sind, bleibt ein ernormer Aufwand für die Implementierung einer sicheren Architektur nach OAuth 2.0 und OpenID Connect ein enormer Aufwand. Es liegt im Interesse eines Softwareentwicklers, der die Funktionen lediglich verwenden und nicht erst implementieren möchte, ein Framework zu verwenden, welches ihm die Arbeit abnimmt.</p>
 <p>Damit wird unter anderem eine einfache Umsetzung von Single-Sign-On und Zugriffsbeschränkungen für Webapplikationen und -schnittstellen ermöglicht.</p>
 <p>OpenID Connect (und damit implizit auch OAuth 2.0) ist vielfältig und in unterschiedlichen Sprachen implementiert. Im .NET Umfeld ist das am häufigsten Verwendete Framework der IdentityServer von Thinktecture. Die neueste Version, der IdentityServer 4, ist seit Ende 2016 auf dem Markt.</p>
+
+<p><b>TODO</b>: Endpoints. /.well-known/openid-configuration, /connect/token </p>
 </div>
 
 
@@ -132,9 +134,12 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 
 <div>
 <br/><h2>IdentityServer - Tanz der Versionen</h2>
-<p>Der IdentityServer in der Version 4 ist nur für das .NET Core Framework verfügbar.
-<br/>
-Dies stellt eine entscheidende Einschränkung dar, ist doch das .NET Core Framework eine neue Technologie, die eben erst ihre ersten Schritte auf dem Boden des .NET Ökosystems macht. An vielen Stellen ist es fehlerhaft oder unvollständig, niemand kann genaue Aussagen über die zukunftsfähigkeit machen und der Umbau bestehender Applikationen, um den IdentityServer4 einzubinden, birgt einen hohen Aufwand. Trotzdem ist dieses Projekt ausschließlich mit IdentityServer4 und auf dem .NET Core Framework umgesetzt. Thinktecture verspricht mit dem IdentityServer 4 eine Abwärtskompatibiliät zur Version 3, womit auch bestehende Webschnittstellen mit einem OpenID Provider, der auf dem .NET Core Framework basiert, Ressourcen schützen können. </p>
+<p>Der IdentityServer liegt aktuell (19.04.2017) mit der neuesten Version bei Version 4. Wenn man sich jetzt aber denkt:
+<br/><i>Na dann nehme ich doch bedenkenlos die neueste Version und bin damit auf der sicheren, zukunftsfähigen Seite!</i>
+<br/>der hat sich geirrt, denn der IdentityServer in der <b>Version 4 ist nur für das .NET Core</b> Framework verfügbar.
+<br/>Dies stellt eine entscheidende Einschränkung dar, ist doch das .NET Core Framework eine neue Technologie, die eben ihre ersten Schritte auf dem Boden des .NET Ökosystems macht. An vielen Stellen ist es fehlerhaft oder unvollständig, niemand kann genaue Aussagen über die zukunftsfähigkeit machen und der Umbau bestehender Applikationen, um den IdentityServer4 einzubinden, birgt einen hohen Aufwand. Trotzdem ist dieses Projekt ausschließlich mit IdentityServer4 und auf dem .NET Core Framework umgesetzt.
+<br/>Ist das nicht ziemlich widersprüchlich und dumm?
+<br/>Nein. Denn Thinktecture verspricht mit dem IdentityServer 4 eine Abwärtskompatibiliät zur Version 3, womit bestehende Webschnittstellen auf dem .NET Standard Framework bleiben können und trotzdem mit einem OpenID Provider für .NET Core ihre Ressourcen schützen können. Dies ist in diesem Projekt mit der Komponente "WebAPIwithIS3" geprüft und bestätigt worden.</p>
 </div>
 
 
@@ -150,22 +155,50 @@ Dies stellt eine entscheidende Einschränkung dar, ist doch das .NET Core Framew
   <li>WebAPI mit IdentityServer 4 <b>WebAPIwithIS4</b></li>
   <li>WebAPI mit IdentityServer 3 <b>WebAPIwithIS3</b></li>
 </ul>
-
 <p>Der <b>AuthServer</b> ist ein OpenID Provider. Er führt Informationen zu allen registrierten Usern, den zu schützenden Ressourcen und den autorisierten Clients. Die <b>Client-Anwendung</b> ist eine Anwendung mit teilweise frei verfügbaren und teilweise über den AuthServer geschützten Ressourcen. Die <b>Web API</b> ist eine Schnittstelle, die den Zugriff auf geschützte Ressourcen ebenfalls über den AuthServer verwaltet. Ein Client, der Ressourcen bei der Web API anfragt, muss erst über den Autorisierungsserver autorisiert werden und erhält dann die benötigten Ressourcen.</p>
-<p>Alle drei Komponenten sind für das .NET Core Framework implementiert und nur auf diesem Lauffähig.</p>
+<p>Alle Komponenten, außer der WebAPI mit IS3, sind nur auf dem .NET Core Framework lauffähig und können demnach auch nur mit der Visual Studio Version 2017 entwickelt werden. Abgesehen von denen, die mit Nerd-Vodoo ihre .NET Core Applikationen auch mit VS2015 zum Laufen bringen. (Ich hörte, das soll es geben...)</p>
+<p>Die Abbildung stellt schematisch die Kommunikation zwischen den Komponenten dar. Hierbei wurde die geschützte Ressource (Protected Ressource) separat dargestellt, wohingegen sie im Projekt immer in der Web API integriert ist. 
 </div>
 
-![Kommunikation zwischen Entitäten](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/Communication_IdServ4Proof_small.png)
+![Kommunikation zwischen Entitäten](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/Communication_IdServ4Proof_small.jpg)
 
 <div>
-<p>Im Abschnitt "OAuth kurz und knapp" wurden die zwei gängigsten Genehmigungsverfahren beschrieben, das Verfahreung über einen Autorisierungscode und das implizite Verfahren. Ein weiteres Verfahren stellt die Genehmigung über die Benutzerdaten des Ressourceninhabers dar.</p>
-<p>Aber sind wir damit nicht wieder auf dem Level der Unsicherheit, bei dem wir die eingangs genannten Vorteile von OAuth über Bord werfen? Nein. Denn die Benutzerdaten werden nur ein mal an den Autorisierungsserver gesendet und ein Token im Gegenzug erhalten. Der Client muss damit die Benutzerdaten nicht persistent speichern, sondern nur den Token. Außerdem bleiben mit dem Token auch die Vorteile der begrenzente und verwaltbaren Zugriffe erhalten.</p>
-<h3>AuthServer</h3>
+<p>Im Abschnitt "OAuth kurz und knapp" wurden Genehmigungsverfahren beschrieben, von denen drei in diesem Projekt eingesetzt werden: implizite Genehmigung, Ressourceninhaber und Clientdaten. Jeder Client verwendet ein anderes Verfahren:</p>
+<table>
+  <tr>
+  <td><b>Client</b></td>
+    <td><b>Genehmigungsverfahren</b></td>
+  </tr>
+  <tr>
+    <td>ClientAppWithIS4</td>
+    <td>Implizit</td>
+  </tr>
+  <tr>
+    <td>WebAPIwithIS4</td>
+    <td>Ressourceninhaber</td>
+  </tr>
+    <tr>
+    <td>WebAPIwithIS3</td>
+    <td>Clientdaten</td>
+  </tr>
+</table>
+<p>Nachfolgend wird jede Komponente einzeln in Hinblick auf ihre Implementierung detaillierter betrachtet.</p>
+<div>
+
+</div>
+<br/><h3>AuthServer</h3>
 <p> Im AuthServer sind die Clients in der Klasse <i>Clients</i> implementiert. Er bietet der Web API die eben beschriebene Zugriffsmöglichkeit über die Benutzerdaten des Ressourceninhabers. Die Client-Anwendung greift über den impliziten Fluss auf die geschützten Ressourcen zu. Alle Daten werden über das Identity Framework und einer SQLite Datenbank persisten gehalten. Beim Start des AuthServers werden alle Clients, Benutzer und Ressourcen in die Datenbank migriert, falls sie nicht bereits vorhanden sind. 
 </p>
-<h3>Client-Anwendung</h3>
-<p>Die Client-Anwendung ist ein initiales, mit Visual Studio 2017 erstelltes und modifiziertes ASP.NET Projekt für Webanwendungen. Die geschützte Ressource ist das Kontak-Formular. Mit einem Klick auf das Formular wird der Anwender auf die Login-Seite des Autorisierungsserver weitergeleitet und kann darin die Client-Anwendung autorisieren. Anschließend ist der Zugriff auf die Kontakt-Daten erlaubt.</p>
-<h3>Web API</h3>
+<div>
+
+</div>
+<br/><h3>ClientAppWithIS4</h3>
+<p>Die Client-Anwendung ist ein initiales, mit Visual Studio 2017 erstelltes und modifiziertes ASP.NET Projekt für Webanwendungen. Die geschützte Ressource ist das Kontak-Formular. Mit einem Klick auf das Formular wird der Anwender auf die Login-Seite des Autorisierungsserver weitergeleitet und kann darin die Client-Anwendung autorisieren. Anschließend ist der Zugriff auf die Kontakt-Daten erlaubt.
+</p>
+<div>
+
+</div>
+<br/><h3>WebAPIwithIS4</h3>
 <p>Die Web API ist ein initiales, mit Visual Studio 2017 erstelltes und modifiziertes ASP.NET Projekt für Webschnittstellen. Die geschützte Ressource ist exemplarisch das Value-Objekt, welches eingangs zu Beispielzwecken mit dem Projekt erstellt wird. Der Zugriff erfolgt über die Benutzerdaten, indem zunächst ein Post-Request an den Autorisierungsserver gesendet wird, um ein Access Token zu erhalten. Der Content-Type Parameter im Header der Anfrage muss den Wert "x-www-form-urlencoded" haben. Außerdem müssen folgende Paramter im Body der Anfrage enthalten sein:</p>
 <ul>
 <li>grant_type</li>
@@ -188,10 +221,11 @@ scope : openID<br/>
 Der Grant-Type entspricht dem Ressource-Owner Genehmigungsverfahren, welches im Autorisierungsserver für diesen Client definiert ist. Auch die Client-ID und das Client-Secret sind im Autorisierungsserver hinterlegt. Der Scope gibt an, auf welche Ressourcen der Client zugreifen möchte. Die möglichen Scopes sind im Autorisierungsserver definiert. Der Benutzername und das Passwort für den Benutzer sind im Falle des Ressource-Owner Genehmigungsverfahrens ebenfalls im Autorisierungsserver hinterlegt.
 Als Antwort erhält man ein Access Token, mit dem man die Ressourcen an der Web API anfragen kann. Die Web API prüft den Access Token beim Autorisierungsserver und gibt bei einem validen Access Token die gewünschten Ressourcen zurück.
 </p>
-</div>
-
-
 <div>
-<h2></h2>
-<p></p>
+
+</div>
+<br/><h3>WebAPIwithIS3</h3>
+<p>Aber sind wir damit nicht wieder auf dem Level der Unsicherheit, bei dem wir die eingangs genannten Vorteile von OAuth über Bord werfen? Nein. Denn die Benutzerdaten werden nur ein mal an den Autorisierungsserver gesendet und ein Token im Gegenzug erhalten. Der Client muss damit die Benutzerdaten nicht persistent speichern, sondern nur den Token. Außerdem bleiben mit dem Token auch die Vorteile der begrenzente und verwaltbaren Zugriffe erhalten.
+</p>
+
 </div>
