@@ -4,12 +4,38 @@ Proof of concept for Authentication and Authorization with IdentityServer 4
 <div>
 <h2>Inhaltsverzeichnis</h2>
 <ol>
-<li>Einleitende Worte</li>
-<li>Grundlagen zu OAuth 2.0 und OpenID Connect</li>
-<li>Technologische Einschränkungen</li>
+<li>Struktur der Doku</li>
+<li>Ziel</li>
+<li>Ein Flüchtiger Blick auf das Projekt</li>
+<li>Crashkurs: OAuth 2.0 und OpenID Connect</li>
+<li>IdentityServer - Tanz der Versionen</li>
 <li>Das Projekt</li>
 </ol>
 </div>
+
+<div>
+<h2>Struktur der Doku</h2>
+</div>
+<div>
+<h2>Ziel</h2>
+</div>
+<div>
+<h2>Ein Flüchtiger Blick auf das Projekt</h2>
+</div>
+<div>
+<h2>Crashkurs: OAuth 2.0 und OpenID Connect</h2>
+</div>
+<div>
+<h2>IdentityServer - Tanz der Versionen</h2>
+</div>
+<div>
+<h2>Das Projekt</h2>
+</div>
+
+
+
+
+
 <div>
 <h2>Einleitende Worte</h2>
 <p>Das Projekt ist eine exemplarische Umsetzung eines Authentifizierungs- und Autorisierungsverfahrens mit dem IdentityServer 4. Die dem IdentityServer zugrundeliegenden Standards sind zum einen der OAuth 2.0 Standard mit dem Open Authorization 2.0 Framework und der offene Standard OpenID Connect.</p>
@@ -55,7 +81,7 @@ Der Ressourcenserver und Autorisierungsserver können auf dem gleichen Server la
 
 <div>
 <h2>Technologische Einschränkungen</h2>
-<p>Der IdentityServer in der Version 4 ist nur für das .NET Core Framework verfügrar.
+<p>Der IdentityServer in der Version 4 ist nur für das .NET Core Framework verfügbar.
 <br/>
 Dies stellt eine entscheidende Einschränkung dar, ist doch das .NET Core Framework eine neue Technologie, die eben erst ihre ersten Schritte auf dem Boden des .NET Ökosystems macht. An vielen Stellen ist es fehlerhaft oder unvollständig, niemand kann genaue Aussagen über die zukunftsfähigkeit machen und der Umbau bestehender Applikationen, um den IdentityServer4 einzubinden, birgt einen hohen Aufwand. Trotzdem ist dieses Projekt ausschließlich mit IdentityServer4 und auf dem .NET Core Framework umgesetzt. Thinktecture verspricht mit dem IdentityServer 4 eine Abwärtskompatibiliät zur Version 3, womit auch bestehende Webschnittstellen mit einem OpenID Provider, der auf dem .NET Core Framework basiert, Ressourcen schützen können. </p>
 </div>
