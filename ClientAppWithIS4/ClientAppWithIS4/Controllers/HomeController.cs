@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
-namespace OpenIDClientApp.Controllers
+namespace ClientAppWithIS4.Controllers
 {
     public class HomeController : Controller
     {
