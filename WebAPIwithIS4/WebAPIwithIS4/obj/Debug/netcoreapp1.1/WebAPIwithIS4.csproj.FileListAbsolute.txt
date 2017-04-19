@@ -1,9 +1,0 @@
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\WebAPIwithIS4\bin\Debug\netcoreapp1.1\WebAPIwithIS4.deps.json
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\WebAPIwithIS4\bin\Debug\netcoreapp1.1\WebAPIwithIS4.runtimeconfig.json
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\WebAPIwithIS4\bin\Debug\netcoreapp1.1\WebAPIwithIS4.runtimeconfig.dev.json
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\WebAPIwithIS4\bin\Debug\netcoreapp1.1\WebAPIwithIS4.dll
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\WebAPIwithIS4\bin\Debug\netcoreapp1.1\WebAPIwithIS4.pdb
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\WebAPIwithIS4\obj\Debug\netcoreapp1.1\WebAPIwithIS4.csprojResolveAssemblyReference.cache
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\WebAPIwithIS4\obj\Debug\netcoreapp1.1\WebAPIwithIS4.AssemblyInfo.cs
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\WebAPIwithIS4\obj\Debug\netcoreapp1.1\WebAPIwithIS4.dll
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\WebAPIwithIS4\obj\Debug\netcoreapp1.1\WebAPIwithIS4.pdb

@@ -1,9 +1,0 @@
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\TestClient\bin\Debug\netcoreapp1.1\TestClient.deps.json
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\TestClient\bin\Debug\netcoreapp1.1\TestClient.runtimeconfig.json
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\TestClient\bin\Debug\netcoreapp1.1\TestClient.runtimeconfig.dev.json
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\TestClient\bin\Debug\netcoreapp1.1\TestClient.dll
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\TestClient\bin\Debug\netcoreapp1.1\TestClient.pdb
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\TestClient\obj\Debug\netcoreapp1.1\TestClient.csprojResolveAssemblyReference.cache
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\TestClient\obj\Debug\netcoreapp1.1\TestClient.AssemblyInfo.cs
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\TestClient\obj\Debug\netcoreapp1.1\TestClient.dll
-D:\WorkDir\Git\IdentityServer4Proof\WebAPIwithIS4\TestClient\obj\Debug\netcoreapp1.1\TestClient.pdb

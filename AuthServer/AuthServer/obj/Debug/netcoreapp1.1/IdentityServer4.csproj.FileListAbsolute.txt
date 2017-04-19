@@ -1,5 +1,0 @@
-C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\bin\Debug\netcoreapp1.1\IdentityServer4.deps.json
-C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\bin\Debug\netcoreapp1.1\IdentityServer4.runtimeconfig.json
-C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\bin\Debug\netcoreapp1.1\IdentityServer4.runtimeconfig.dev.json
-C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\obj\Debug\netcoreapp1.1\IdentityServer4.csprojResolveAssemblyReference.cache
-C:\Users\chichlow\Documents\Visual Studio 2017\Projects\IdServTest\IdServTest\obj\Debug\netcoreapp1.1\IdentityServer4.AssemblyInfo.cs
