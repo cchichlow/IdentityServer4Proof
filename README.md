@@ -15,12 +15,14 @@ Proof of concept for Authentication and Authorization with IdentityServer 4
 
 <div>
 <h2>Struktur der Doku</h2>
+<p> Mit dieser Dokumentation wird ein möglichst einfacher Einstieg in das vorliegende Projekt gewährleistet. Zunächst wird die Absicht, das Ziel mit dem das Projekt entstanden ist, herausgestellt und ein Überblick über die darin befindlichen Komponenten verschafft. Wer sich zuvor nie mit OAuth 2.0 und OpenID Connect befasst hat, oder sein Wissen auffrischen möchte, findet in einer Kurzanleitung die grundlegenden, groben Eckpunkte, die es zu diesen Themen zu wissen gibt.<br/>Auf diesem Fundament wird schließlich detaillierter auf das Projekt und jede einzelne Komponente eingegangen.</p>
 </div>
 <div>
 <h2>Ziel</h2>
+<p>Man nehme eine Web API, Clients die Ressourcen über die API anfragen und sichere das Ganze mittels SSL-Verschlüsselung. Was fällt auf? Es fehlen Authentifizierung und Autorisierung!<br/>Mit einer solchen Problemstellung hat dieses Projekt begonnen. Das Ziel ist es demnach eine bestehende Web API mit sicheren Verfahren zur Authentifizierung und Autorisierung von Anwendern und Clients zu schützen. Diese Aufgabe übernimmt unser Held:<b>IdentityServer</b>. Das Projekt stellt eine exemplarische Implementierung möglicher (nicht aller) Authentifizierungs- und Autorisierungsverfahren mittels IdentityServer dar./p>
 </div>
 <div>
-<h2>Ein Flüchtiger Blick auf das Projekt</h2>
+<h2>Überblick - Ein Flüchtiger Blick auf das Projekt</h2>
 </div>
 <div>
 <h2>Crashkurs: OAuth 2.0 und OpenID Connect</h2>
@@ -29,7 +31,7 @@ Proof of concept for Authentication and Authorization with IdentityServer 4
 <h2>IdentityServer - Tanz der Versionen</h2>
 </div>
 <div>
-<h2>Das Projekt</h2>
+<h2>Das Projekt - </h2>
 </div>
 
 
