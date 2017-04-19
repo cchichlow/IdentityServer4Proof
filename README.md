@@ -72,7 +72,7 @@ Der <b>Client</b> ist die Anwendung, die auf die geschützten Ressourcen zugreif
 <br/>
 </div>
 
-![OAuth 2.0 Protokollfluss](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/OAuth_Protokollfluss_engl.png)
+![OAuth 2.0 Protokollfluss](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/OAuth_Protokollfluss_engl_small.png)
 
 <div>
 <br/>
@@ -118,7 +118,7 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 <br/>
 </div>
 
-![OAuth 2.0 Protokollfluss](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/OpenID_Protokollfluss_deut.png)
+![OAuth 2.0 Protokollfluss](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/OpenID_Protokollfluss_deut_small.png)
 
 <div>
 <p>Obwohl die Technologien für Authentifizierung und Autorisierung mit den genannten Standards einheitlich definiert sind, bleibt ein ernormer Aufwand für die Implementierung einer sicheren Architektur nach OAuth 2.0 und OpenID Connect ein enormer Aufwand. Es liegt im Interesse eines Softwareentwicklers, der die Funktionen lediglich verwenden und nicht erst implementieren möchte, ein Framework zu verwenden, welches ihm die Arbeit abnimmt.</p>
@@ -155,7 +155,7 @@ Dies stellt eine entscheidende Einschränkung dar, ist doch das .NET Core Framew
 <p>Alle drei Komponenten sind für das .NET Core Framework implementiert und nur auf diesem Lauffähig.</p>
 </div>
 
-![Kommunikation zwischen Entitäten](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/Communication_IdServ4Proof_small.jpg)
+![Kommunikation zwischen Entitäten](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/Communication_IdServ4Proof_small.png)
 
 <div>
 <p>Im Abschnitt "OAuth kurz und knapp" wurden die zwei gängigsten Genehmigungsverfahren beschrieben, das Verfahreung über einen Autorisierungscode und das implizite Verfahren. Ein weiteres Verfahren stellt die Genehmigung über die Benutzerdaten des Ressourceninhabers dar.</p>
