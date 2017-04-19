@@ -78,7 +78,21 @@ Der <b>Client</b> ist die Anwendung, die auf die geschützten Ressourcen zugreif
 <br/>
 <p>Dem Ablauf zufolge kann der Client, nachdem er vom Ressourceninhaber eine Autorisierungsgenehmigung erhalten hat, beim Autorisierungsserver einen Access Token anfragen. Dabei gibt er an auf welche Ressourcen er zugreifen möchte und erhält einen Access Token, der nur für ebendiesen Client und nur für die angefragten Ressourcen gültig ist. Mit dem Access Token werden anschließend die Ressourcen beim Ressourcenserver angefragt.
 Der Ressourcenserver und Autorisierungsserver können auf dem gleichen Server laufen, müssen also nicht getrennt verwaltet werden.</p>
-<p>Der beschriebene Protokollfluss ist nur eine schematische Darstellung und wird über Genehmigungsverfahren realisiert. Vier <b>Genehmigungsverfahren</b> sind im OAuth-2.0-Standard definiert: Autorisierungscode, Implizite Genehmigung, Ressourceninhaber und Clientdaten. Beim <b>Autorisierungscode</b> wird der Benutzer vom Client an den Autorisierungsserver weitergeleitet und autorisiert dort den Client. Ist der Client erfolgreich autorisiert, erhält er einen Autorisierungscode, mit dem er ein Access Token beim Autorisierungsserver anfragen kann. Erst mit dem Access Token werden Ressourcen beim Ressourcenserver angefragt. Das <b>implizite Genehmigungsverfahren</b> ist im Prinzip eine Vereinfachung des Autorisierungscode-Verfahrens. Dabei wird dem Client statt einem Autorisierungscode direkt ein Access Token erstellt. Das implizite Genehmigungsverfahren eignet sich besonders für in-browser Clients oder Clients die in einer Skripsprache (wie JavaScript) geschrieben sind. Bei der Genehmigung über die Anmeldedaten des <b>Ressourceninhabers</b> fragt der Client ein Access-Token direkt mit den Anmeldedaten des Ressourceninhabers an und muss von diesem nicht separat am Autorisierungsserver autorisiert werden. Beim Verfahren <b>Clientdaten</b> ist ein Client im Autorisierungsserver registriert und kann über seine Client-Identifikation und ein Client-Secret ein Access-Token anfragen.</p>
+<p>Der beschriebene Protokollfluss ist nur eine schematische Darstellung und wird über Genehmigungsverfahren realisiert.</p>
+<p>Vier <b>Genehmigungsverfahren</b> sind im OAuth-2.0-Standard definiert:</p>
+
+<ul>
+<li>Autorisierungscode<br/>
+Beim Autorisierungscode wird der Benutzer vom Client an den Autorisierungsserver weitergeleitet und autorisiert dort den Client. Ist der Client erfolgreich autorisiert, erhält er einen Autorisierungscode, mit dem er ein Access Token beim Autorisierungsserver anfragen kann. Erst mit dem Access Token werden Ressourcen beim Ressourcenserver angefragt.</li>
+<li>Implizites Genehmigung<br/>
+Das implizite Genehmigungsverfahren ist im Prinzip eine Vereinfachung des Autorisierungscode-Verfahrens. Dabei wird dem Client statt einem Autorisierungscode direkt ein Access Token erstellt. Das implizite Genehmigungsverfahren eignet sich besonders für in-browser Clients oder Clients die in einer Skripsprache (wie JavaScript) geschrieben sind.</li>
+<li>Ressourceninhaber<br/>
+Bei der Genehmigung über die Anmeldedaten des Ressourceninhabers fragt der Client ein Access-Token direkt mit den Anmeldedaten des Ressourceninhabers an und muss von diesem nicht separat am Autorisierungsserver autorisiert werden.</li>
+<li>Clientdaten<br/>
+Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert und kann über seine Client-Identifikation und ein Client-Secret ein Access-Token anfragen.</li>
+</ul>
+<br/>
+
 <p>Wie bereits erwähnt, wird nach OAuth-2.0-Standard nur mittels HTTP kommuniziert. Die Endpoints, die dabei angesprochen werden, sind im Standard definiert, als:</p>
 <ul>
   <li>Autorisierungs-Endpoint (Autorisierungsserver)</li>
@@ -88,7 +102,9 @@ Der Ressourcenserver und Autorisierungsserver können auf dem gleichen Server la
 <p>Die URIs der Endpoints müssen für jeden OAuth-Anbieter separat ermittelt werden. Gängig sind jedoch "/authorization" für den Autorisierungs-Endpoint und "/token" für den Token-Endpoint. Die Verwendung der Endpoints verriert je nach Genehmigungsverfahren.</p>
 <p>Beim Autorisierungscode-Fluss leitet der Client den Benutzer an den Autorisierungs-Endpoint weiter, um einen Autorisierungscode zu erhalten. Der Autorisierungsserver leitet den Benutzer nach erfolgreicher Autorisierung an den Redirection-Endpoint des Clients weiter. Mit dem Autorisierungscode kann der Client anschließend ein Access-Token am Token-Endpoint und mit diesem schließlich die geschützte Ressource anfragen. Bei einer Anfrage am Autorisierungs-Enpoint im impliziten Genehmigungsverfahren, wird das Access-Token direkt am Autorisierungs-Endpoint ausgestellt und der Benutzer an den Redirection-Enpoint des Clients weitergeleitet. Beim Ressourceninhaber-Fluss wird das Access-Token am Token-Enpoint angefragt. Ebenso bei dem Genehmigungsverfahren über Clientdaten.</p>
 <p>OAuth 2.0 ist ein reines Autorisierungsverfahren und bietet keine Mechanismen für eine sicher Authentifizierung. Deshalb wurde mit OpenID ein Protokoll entwickelt, welches auf dem OAuth 2.0 Standard aufsetzend Authentifizierungsmechanismen für einen sicheren Umgang mit Benutzerdaten und Single-Sign-On im Netz ermöglicht.</p>
+</div>
 
+<div>
 <br/><h3>OpenID Connect</h3>
 <p>OpenID Connect ist eine OpenID Spezifikation, die als Identitätsschicht auf dem O-Auth 2.0 Protokoll mit dem JWT Token Format aufbaut. Die <b>Genehmigungsverfahren</b> bleiben die gleichen, nur, dass nun auch Benutzerdaten wie Ressourcen erfragt werden können. Diese werden als <b>ID Token</b> zurückgegeben und enthalten unter anderem Informationen über den Benutzer und die Authentifizierung eines bestimmten Clients. Ein ID Token ist nur in der Kombination aus Endanwender, Client und dem OpenID Provider gültig. Damit darf ein ID Token für den gleichen Endanwender nicht von un-terschiedlichen Clients akzeptiert werden.</p>
 <p>Im OpenID Connect Protokollfluss für den Erhalt von Benutzerdaten werden folgende Rollen unterschieden:</p>
@@ -98,7 +114,13 @@ Der Ressourcenserver und Autorisierungsserver können auf dem gleichen Server la
 <li>OpenID Provider</li>
 </ul>
 <p>Der OpenID Provider entspricht dabei dem Autorisierungsserver und dem Ressourcenserver aus dem vo OAuth bekannten Protokollfluss.</p>
-<p>Ein ID Token ist laut der Spezifikation ein Sicherheitstoken, welches Informationen zur Authentifizierung eines Endanwenders über einen Autorisierungsserver und weitere, angefragte Informationen enthält. Die Spezifikation definiert die Repräsentation des ID Token als JSON Web Token (JWT). Es enthält für alle OAuth 2.0 Informationsflüsse eine Reihe von benötigten, sowie optionalen Claims. Zusätzlich kann ein ID Token eige-ne definierte Claims enthalten, womit auch definiert ist, dass Claims, welche nicht er-kannt werden, server-, wie client-seitig, ignoriert werden müssen.<br/></p>
+<p>Ein ID Token ist laut der Spezifikation ein Sicherheitstoken, welches Informationen zur Authentifizierung eines Endanwenders über einen Autorisierungsserver und weitere, angefragte Informationen enthält. Die Spezifikation definiert die Repräsentation des ID Token als JSON Web Token (JWT). Es enthält für alle OAuth 2.0 Informationsflüsse eine Reihe von benötigten, sowie optionalen Claims. Zusätzlich kann ein ID Token eige-ne definierte Claims enthalten, womit auch definiert ist, dass Claims, welche nicht er-kannt werden, server-, wie client-seitig, ignoriert werden müssen.</p>
+<br/>
+</div>
+
+![OAuth 2.0 Protokollfluss](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/OpenID_Protokollfluss_deut.png)
+
+<div>
 <p>Obwohl die Technologien für Authentifizierung und Autorisierung mit den genannten Standards einheitlich definiert sind, bleibt ein ernormer Aufwand für die Implementierung einer sicheren Architektur nach OAuth 2.0 und OpenID Connect ein enormer Aufwand. Es liegt im Interesse eines Softwareentwicklers, der die Funktionen lediglich verwenden und nicht erst implementieren möchte, ein Framework zu verwenden, welches ihm die Arbeit abnimmt.</p>
 <p>Damit wird unter anderem eine einfache Umsetzung von Single-Sign-On und Zugriffsbeschränkungen für Webapplikationen und -schnittstellen ermöglicht.</p>
 <p>OpenID Connect (und damit implizit auch OAuth 2.0) ist vielfältig und in unterschiedlichen Sprachen implementiert. Im .NET Umfeld ist das am häufigsten Verwendete Framework der IdentityServer von Thinktecture. Die neueste Version, der IdentityServer 4, ist seit Ende 2016 auf dem Markt.</p>
