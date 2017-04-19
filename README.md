@@ -4,8 +4,8 @@ Proof of concept for Authentication and Authorization with IdentityServer 4
 <div>
 <h2>Inhaltsverzeichnis</h2>
 <ol>
-<li>Struktur der Doku</li>
-<li>Ziel</li>
+  <li>Struktur der Doku</li>
+  <li>Ziel</li>
   <li>Ein Flüchtiger Blick auf das Projekt</li>
   <li>Crashkurs: OAuth 2.0 und OpenID Connect</li>
   <li>IdentityServer - Tanz der Versionen</li>
@@ -14,25 +14,17 @@ Proof of concept for Authentication and Authorization with IdentityServer 4
 </div>
 
 <div>
-<br/><h2>Struktur der Doku</h2>
+<br/><h2>1. Struktur der Doku</h2>
 <p> Mit dieser Dokumentation wird ein möglichst einfacher Einstieg in das vorliegende Projekt gewährleistet. Zunächst wird die Absicht, das Ziel mit dem das Projekt entstanden ist, herausgestellt und ein Überblick über die darin befindlichen Komponenten verschafft. Wer sich zuvor nie mit OAuth 2.0 und OpenID Connect befasst hat, oder sein Wissen auffrischen möchte, findet in einer Kurzanleitung die grundlegenden, groben Eckpunkte, die es zu diesen Themen zu wissen gibt.<br/>Auf diesem Fundament wird schließlich detaillierter auf das Projekt und jede einzelne Komponente eingegangen.</p>
 </div>
 
-
-
-
-
 <div>
-<br/><h2>Ziel</h2>
+<br/><h2>2. Ziel</h2>
 <p>Man nehme eine Web API, Clients die Ressourcen über die API anfragen und sichere das Ganze mittels SSL-Verschlüsselung. Was fällt auf? Es fehlen Authentifizierung und Autorisierung!<br/>Mit einer solchen Problemstellung hat dieses Projekt begonnen. Das Ziel ist es demnach eine bestehende Web API mit sicheren Verfahren zur Authentifizierung und Autorisierung von Anwendern und Clients zu schützen. Diese Aufgabe übernimmt unser Held: <b>IdentityServer</b>. Das Projekt stellt eine exemplarische Implementierung möglicher (nicht aller) Authentifizierungs- und Autorisierungsverfahren mittels IdentityServer dar./p>
 </div>
 
-
-
-
-
 <div>
-<br/><h2>Überblick - Ein Flüchtiger Blick auf das Projekt</h2>
+<br/><h2>3. Überblick - Ein Flüchtiger Blick auf das Projekt</h2>
 <p>Dieses Projekt ist eine exemplarische Umsetzung verschiedener Authentifizierungs- und Autorisierungsverfahrens mit dem IdentityServer, welcher den OAuth-2.0-Standard und den offene Standard OpenID Connect implementiert.</p>
 <br/>
 <p>Das Projekt besteht aus den vier Komponenten:</p>
@@ -44,15 +36,11 @@ Proof of concept for Authentication and Authorization with IdentityServer 4
 </ul>
 <br/>
 <p>Jede der beiden Web APIs besitzt einen Test-Client, über den die geschützten Ressourcen der jeweiligen Web API abgerufen werden. Der Test-Client fragt, um Zugriff auf die geschützten Ressourcen zu erhalten, einen Access-Token beim Autorisierungsserver an und holt sich mit diesem Token die geschützten Ressourcen bei der Web API. Wie dies im Detail funktioniert ist in der Projektbeschreibung unten erklärt.</p>
-
-
-
-
-
 </div>
+
 <div>
-<br/><h2>Crashkurs: OAuth 2.0 und OpenID Connect</h2>
-<h3>OAuth 2.0 - kurz und knapp</h3>
+<br/><h2>4. Crashkurs: OAuth 2.0 und OpenID Connect</h2>
+<h3>4.1. OAuth 2.0 - kurz und knapp</h3>
 <p>OAuth 2.0 ist ein Standard, in dem Verfahren für begrenzenten Zugriff auf HTTP-Ressourcen definiert werden. Dabei kann ein sogenannter Ressource-Owner seine Ressourcen kontrolliert an Clients und Dritte bereitstellen. Ohne OAuth würde dies über die Weitergabe der persönlichen Anmeldedaten des Ressource-Owners erfolgen, womit jedoch zum einen Sicherheitsdefiziete entstehen, da der Client oder Dritte dann vollen Zugriff auf alle Ressourcen des Ressource-Owners erhält und alle damit verbundenen Rechte. Zudem müssten, um dem Client die Rechte wieder zu entziehen, die Anmeldedaten geändert werden, was jedoch zum Entzug der Rechte für alle autorisierten Clients führt. Deshalb kommt OAuth zum Einsatz und bringt Verfahren, mit denen diese Probleme gelöst werden.<br/>
 Im Standard ist ein Protokollfluss definiert, der Zugriffe mittels Token kontrolliert.<br/>
 Es sind vier Rollen am Protokollfluss beteiligt:</p>
@@ -105,7 +93,7 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 </div>
 
 <div>
-<br/><h3>OpenID Connect</h3>
+<br/><h3>4.2. OpenID Connect</h3>
 <p>OpenID Connect ist eine OpenID Spezifikation, die als Identitätsschicht auf dem O-Auth 2.0 Protokoll mit dem JWT Token Format aufbaut. Die Genehmigungsverfahren bleiben die gleichen, nur, dass nun auch Benutzerdaten wie Ressourcen erfragt werden können. Diese werden als ID Token zurückgegeben und enthalten unter anderem Informationen über den Benutzer und die Authentifizierung eines bestimmten Clients. Ein ID Token ist nur in der Kombination aus Endanwender, Client und dem OpenID Provider gültig. Damit darf ein ID Token für den gleichen Endanwender nicht von un-terschiedlichen Clients akzeptiert werden.</p>
 <p>Im OpenID Connect Protokollfluss für den Erhalt von Benutzerdaten werden folgende Rollen unterschieden:</p>
 <ul>
@@ -133,7 +121,7 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 
 
 <div>
-<br/><h2>IdentityServer - Tanz der Versionen</h2>
+<br/><h2>5. IdentityServer - Tanz der Versionen</h2>
 <p>Der IdentityServer liegt aktuell (19.04.2017) mit der neuesten Version bei Version 4. Wenn man sich jetzt aber denkt:
 <br/><i>Na dann nehme ich doch bedenkenlos die neueste Version und bin damit auf der sicheren, zukunftsfähigen Seite!</i>
 <br/>der hat sich geirrt, denn der IdentityServer in der <b>Version 4 ist nur für das .NET Core</b> Framework verfügbar.
@@ -147,7 +135,7 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 
 
 <div>
-<br/><h2>Das Projekt</h2>
+<br/><h2>6. Das Projekt</h2>
 <p>Wie bereits erwähnt, besteht das vorliegende Projekt aus vier Komponenten:</p>
 <ul>
   <li>Autorisierungsserver <b>AuthServer</b></li>
@@ -186,19 +174,19 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 <div>
 
 </div>
-<br/><h3>AuthServer</h3>
+<br/><h3>6.1. AuthServer</h3>
 <p> Im AuthServer sind die Clients in der Klasse <i>Clients</i> implementiert. Er bietet der Web API die eben beschriebene Zugriffsmöglichkeit über die Benutzerdaten des Ressourceninhabers. Die Client-Anwendung greift über den impliziten Fluss auf die geschützten Ressourcen zu. Alle Daten werden über das Identity Framework und einer SQLite Datenbank persisten gehalten. Beim Start des AuthServers werden alle Clients, Benutzer und Ressourcen in die Datenbank migriert, falls sie nicht bereits vorhanden sind. 
 </p>
 <div>
 
 </div>
-<br/><h3>ClientAppWithIS4</h3>
+<br/><h3>6.2. ClientAppWithIS4</h3>
 <p>Die Client-Anwendung ist ein initiales, mit Visual Studio 2017 erstelltes und modifiziertes ASP.NET Projekt für Webanwendungen. Die geschützte Ressource ist das Kontak-Formular. Mit einem Klick auf das Formular wird der Anwender auf die Login-Seite des Autorisierungsserver weitergeleitet und kann darin die Client-Anwendung autorisieren. Anschließend ist der Zugriff auf die Kontakt-Daten erlaubt.
 </p>
 <div>
 
 </div>
-<br/><h3>WebAPIwithIS4</h3>
+<br/><h3>6.3. WebAPIwithIS4</h3>
 <p>Die Web API ist ein initiales, mit Visual Studio 2017 erstelltes und modifiziertes ASP.NET Projekt für Webschnittstellen. Die geschützte Ressource ist exemplarisch das Value-Objekt, welches eingangs zu Beispielzwecken mit dem Projekt erstellt wird. Der Zugriff erfolgt über die Benutzerdaten, indem zunächst ein Post-Request an den Autorisierungsserver gesendet wird, um ein Access Token zu erhalten. Der Content-Type Parameter im Header der Anfrage muss den Wert "x-www-form-urlencoded" haben. Außerdem müssen folgende Paramter im Body der Anfrage enthalten sein:</p>
 <ul>
 <li>grant_type</li>
@@ -224,7 +212,7 @@ Als Antwort erhält man ein Access Token, mit dem man die Ressourcen an der Web 
 <div>
 
 </div>
-<br/><h3>WebAPIwithIS3</h3>
+<br/><h3>6.4. WebAPIwithIS3</h3>
 <p>Aber sind wir damit nicht wieder auf dem Level der Unsicherheit, bei dem wir die eingangs genannten Vorteile von OAuth über Bord werfen? Nein. Denn die Benutzerdaten werden nur ein mal an den Autorisierungsserver gesendet und ein Token im Gegenzug erhalten. Der Client muss damit die Benutzerdaten nicht persistent speichern, sondern nur den Token. Außerdem bleiben mit dem Token auch die Vorteile der begrenzente und verwaltbaren Zugriffe erhalten.
 </p>
 
