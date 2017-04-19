@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Identity;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityModel;
+using IdentityServer4.Configuration;
 
 namespace AuthServer
 {

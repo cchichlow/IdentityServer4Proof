@@ -18,8 +18,8 @@ namespace AuthServer.InMemoryStores
                 // definiert Scopes für den Zugriff
                 new Client
                 {
-                    ClientId = "oauthClient",
-                    ClientName = "Example Client Credentials Client Application",
+                    ClientId = "IS3api",
+                    ClientName = "Web API mit IdentityServer 3",
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     ClientSecrets = new List<Secret> {
                         new Secret("superSecretPassword".Sha256())},
@@ -47,7 +47,7 @@ namespace AuthServer.InMemoryStores
                 new Client
                 {
                     ClientId= "testApi",
-                    ClientName = "OpenId Test Web API",
+                    ClientName = "Web API mit IdentityServer 4",
                     ClientSecrets =
                 {
                     new Secret("secret".Sha256())
@@ -59,7 +59,7 @@ namespace AuthServer.InMemoryStores
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
                         "role",
-                        "customAPI"
+                        "customAPI.read"
                     }
                 }
             };
