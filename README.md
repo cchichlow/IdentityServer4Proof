@@ -160,7 +160,7 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 <p>Die Abbildung stellt schematisch die Kommunikation zwischen den Komponenten dar. Hierbei wurde die geschützte Ressource (Protected Ressource) separat dargestellt, wohingegen sie im Projekt immer in der Web API integriert ist. 
 </div>
 
-![Kommunikation zwischen Entitäten](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/Communication_IdServ4Proof_small.jpg)
+![Kommunikation zwischen Entitäten](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/Communication_IdServ4Proof_small.png)
 
 <div>
 <p>Im Abschnitt "OAuth kurz und knapp" wurden Genehmigungsverfahren beschrieben, von denen drei in diesem Projekt eingesetzt werden: implizite Genehmigung, Ressourceninhaber und Clientdaten. Jeder Client verwendet ein anderes Verfahren:</p>
