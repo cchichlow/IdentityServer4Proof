@@ -145,7 +145,7 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 </ul>
 <p>Der <b>AuthServer</b> ist ein OpenID Provider. Er führt Informationen zu allen registrierten Usern, den zu schützenden Ressourcen und den autorisierten Clients. Die <b>Client-Anwendung</b> ist eine Anwendung mit teilweise frei verfügbaren und teilweise über den AuthServer geschützten Ressourcen. Die <b>Web API</b> ist eine Schnittstelle, die den Zugriff auf geschützte Ressourcen ebenfalls über den AuthServer verwaltet. Ein Client, der Ressourcen bei der Web API anfragt, muss erst über den Autorisierungsserver autorisiert werden und erhält dann die benötigten Ressourcen.</p>
 <p>Alle Komponenten, außer der WebAPI mit IS3, sind nur auf dem .NET Core Framework lauffähig und können demnach auch nur mit der Visual Studio Version 2017 entwickelt werden. Abgesehen von denen, die mit Nerd-Vodoo ihre .NET Core Applikationen auch mit VS2015 zum Laufen bringen. (Ich hörte, das soll es geben...)</p>
-<p>Die Abbildung stellt schematisch die Kommunikation zwischen den Komponenten dar. Hierbei wurde die geschützte Ressource (Protected Ressource) separat dargestellt, wohingegen sie im Projekt immer in der Web API integriert ist. 
+<p>Die Abbildung stellt schematisch die Kommunikation zwischen den Komponenten dar. Hierbei ist die geschützte Ressource (Protected Ressource) separat dargestellt, wobei sie im Projekt immer in der Web API integriert ist. 
 </div>
 
 ![Kommunikation zwischen Entitäten](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/Communication_IdServ4Proof_small.png)
@@ -175,8 +175,38 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 
 </div>
 <br/><h3>6.1. AuthServer</h3>
-<p> Im AuthServer sind die Clients in der Klasse <i>Clients</i> implementiert. Er bietet der Web API die eben beschriebene Zugriffsmöglichkeit über die Benutzerdaten des Ressourceninhabers. Die Client-Anwendung greift über den impliziten Fluss auf die geschützten Ressourcen zu. Alle Daten werden über das Identity Framework und einer SQLite Datenbank persisten gehalten. Beim Start des AuthServers werden alle Clients, Benutzer und Ressourcen in die Datenbank migriert, falls sie nicht bereits vorhanden sind. 
+<p> Im vorliegenden AuthServer-Projekt sind die Clients, User und Ressourcen vorkonfiguriert. Alle sind aus bestehenden Klassen in eine SQLite Datenbank migriert.</p>
+<h4>6.1.1. Clients</h4>
+<p>Die drei genannten Clients werden in der Klasse AuthServer.InMemoryStores.Clients definiert. Die Web API <i>WebAPIwithIS3</i> wird über die ID <i>IS3api</i> angesprochen, die <i>WebAPIwithIS4</i> über die ID <i>testApi</i> und die Client-Anwendung <i>ClientAppWithIS4</i> über die ID <i>openIdConnectClient</i>. NAchfolgende Tabelle gibt eine Übersicht über die konfigurierten Werte zu dem jeweiligen Client:
+Client|ID|GrantType|Secret|Scopes|RedirectsUri
+WebAPIwithIS3|IS3api|ClientCredentials|superSecretPassword|customAPI.read|-
+WebAPIwithIS4|testApi|ResourceOwnerPassword|secret|OpenId Profile Email role customAPI.read|-
+openIdConnectClient|openIdConnectClient|Implicit|-|OpenId Profile Email role customAPI| https://localhost:44342/signin-oidc
 </p>
+```csharp
+                new Client
+                {
+                    ClientId = "IS3api",
+                    ClientName = "Web API mit IdentityServer 3",
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    ClientSecrets = new List<Secret> {
+                        new Secret("superSecretPassword".Sha256())},
+                    // Secret wird über eine von IS4 gebotene extension method gehasht
+                    AllowedScopes = new List<string> {"customAPI.read"}
+                    // Als Scope wird hier ein selbst implementiertes aus der Klasse Resources verwendet
+                }
+```
+<h4>6.1.2. User</h4>
+<p></p>
+zwei User (alice und bob) mit pw alice und bob, besitzen jeweils User Claims, die über den Identity-Ressource Scope erreicht werden können.
+<h4>6.1.1- Clients</h4>
+<p>Identity- und Api-Ressourcen</p>
+<p>
+Alle Daten werden über das Identity Framework und einer SQLite Datenbank persisten gehalten. Beim Start des AuthServers werden alle Clients, Benutzer und Ressourcen in die Datenbank migriert, falls sie nicht bereits vorhanden sind.</p>
+
+<p>
+</p>
+<a href=https://github.com/IdentityServer/IdentityServer4.Quickstart.UI></a>
 <div>
 
 </div>
