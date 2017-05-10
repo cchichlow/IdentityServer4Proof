@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 namespace OpenIdTestWebAPI.Controllers
 {
+    /// <summary>
+    /// Klasse steuert Zugriff auf geschützte und ungeschützte Ressourcen.
+    /// </summary>
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
@@ -18,6 +18,7 @@ namespace OpenIdTestWebAPI.Controllers
         }
 
         // GET api/values/5
+        // Das Attribut Authorize triggert die Autorisierung über den AuthServer
         [Authorize]
         [HttpGet("{id}")]
         public string Get(int id)

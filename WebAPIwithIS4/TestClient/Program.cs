@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TestClient
 {
+    /// <summary>
+    /// Testklasse simuliert einen Client, der Zugriff auf eine geschützte Ressource der WabAPI anfordert.
+    /// </summary>
     class Program
     {
         static TestCase[] cases = new[]
@@ -14,9 +17,11 @@ namespace TestClient
             new TestCase
             {
                 Description = "IdentityServer4 Test Project",
+                //Token-Endpoint des AuthServers
                 TokenEndpoint = "http://localhost:51571/connect/token",
+                //Identity-Endpoint des AuthServers
                 ClaimsEndpoint = "http://localhost:51571/identity",
-
+                // WebAPI mit Angabem zum Client
                 Apis =
                 {
                     new Api
@@ -46,13 +51,15 @@ namespace TestClient
 
                 foreach (var api in test.Apis)
                 {
-                    Console.WriteLine("Requesting Access-Token...");
+                    // Access-Token am Autorisisierungsserver anfragen
+                    Console.WriteLine("Access-Token anfragen...");
                     var accessToken = await GetToken(test.TokenEndpoint, api.ClientId, api.Secret, api.UserName, api.Password);
 
                     Console.WriteLine($"API:            {api.Description}");
                     Console.WriteLine("Access-Token:" + Environment.NewLine +accessToken.ToString());
 
-                    Console.WriteLine("Requesting Ressource...");
+                    // Mit dem Access-Token die geschützte Ressource an der WebAPI anfragen
+                    Console.WriteLine("Ressourcen anfragen...");
                     await CallApi(api.Url, accessToken);
                     await GetUserClaims(test.ClaimsEndpoint, accessToken);
                 }
@@ -62,6 +69,15 @@ namespace TestClient
             Console.ReadLine();
         }
 
+        /// <summary>
+        /// Token am Authorisierungsserver anfragen.
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <param name="clientID"></param>
+        /// <param name="secret"></param>
+        /// <param name="userName"></param>
+        /// <param name="userPassword"></param>
+        /// <returns></returns>
         private static async Task<string> GetToken(string endpoint, string clientID, string secret, string userName, string userPassword)
         {
             var tokenClient = new TokenClient(endpoint, clientID, secret);
@@ -75,6 +91,12 @@ namespace TestClient
             return response.AccessToken;
         }
 
+        /// <summary>
+        /// Die geschützte Api-Ressource (mit Access-Token) an der WebAPI anfragen.
+        /// </summary>
+        /// <param name="api"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         private static async Task CallApi(string api, string accessToken)
         {
             var client = new HttpClient();
@@ -87,13 +109,19 @@ namespace TestClient
             Console.WriteLine("OK");
         }
 
+        /// <summary>
+        /// Die geschützte Identity-Ressource (mit Access-Token) an der WebAPI anfragen.
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         private static async Task GetUserClaims(string endpoint, string accessToken)
         {
             // call api
             var client = new HttpClient();
             client.SetBearerToken(accessToken);
 
-            Console.WriteLine("Requesting User Claims...");
+            Console.WriteLine("User Claims anfordern...");
             var response = await client.GetAsync(endpoint);
             if (!response.IsSuccessStatusCode)
             {
@@ -107,6 +135,9 @@ namespace TestClient
         }
     }
 
+    /// <summary>
+    /// Zu testendender Fall, mit Angabe zum Tokenendpunkt und der anzufragenden API.
+    /// </summary>
     public class TestCase
     {
         public string Description { get; set; }
@@ -116,6 +147,9 @@ namespace TestClient
         public ICollection<Api> Apis { get; set; } = new HashSet<Api>();
     }
 
+    /// <summary>
+    /// Angaben zur anzufragenden API.
+    /// </summary>
     public class Api
     {
         public string Url { get; set; }
