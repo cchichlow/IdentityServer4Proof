@@ -151,7 +151,7 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 ![Kommunikation zwischen Entitäten](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/Communication_IdServ4Proof_small.png)
 
 <div>
-<p>Im Abschnitt "OAuth kurz und knapp" wurden Genehmigungsverfahren beschrieben, von denen drei in diesem Projekt eingesetzt werden: implizite Genehmigung, Ressourceninhaber und Clientdaten. Jeder Client verwendet ein anderes Verfahren:</p>
+<p>Im Abschnitt "OAuth kurz und knapp" wurden Genehmigungsverfahren beschrieben, von denen drei in diesem Projekt eingesetzt werden: Implizit, Ressourceninhaber und Clientdaten. Jeder Client verwendet ein anderes Verfahren:</p>
 <table>
   <tr>
   <td><b>Client</b></td>
@@ -175,38 +175,97 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 
 </div>
 <br/><h3>6.1. AuthServer</h3>
-<p> Im vorliegenden AuthServer-Projekt sind die Clients, User und Ressourcen vorkonfiguriert. Alle sind aus bestehenden Klassen in eine SQLite Datenbank migriert.</p>
-<h4>6.1.1. Clients</h4>
-<p>Die drei genannten Clients werden in der Klasse AuthServer.InMemoryStores.Clients definiert. Die Web API <i>WebAPIwithIS3</i> wird über die ID <i>IS3api</i> angesprochen, die <i>WebAPIwithIS4</i> über die ID <i>testApi</i> und die Client-Anwendung <i>ClientAppWithIS4</i> über die ID <i>openIdConnectClient</i>. NAchfolgende Tabelle gibt eine Übersicht über die konfigurierten Werte zu dem jeweiligen Client:
-Client|ID|GrantType|Secret|Scopes|RedirectsUri
-WebAPIwithIS3|IS3api|ClientCredentials|superSecretPassword|customAPI.read|-
-WebAPIwithIS4|testApi|ResourceOwnerPassword|secret|OpenId Profile Email role customAPI.read|-
-openIdConnectClient|openIdConnectClient|Implicit|-|OpenId Profile Email role customAPI| https://localhost:44342/signin-oidc
-</p>
-```csharp
-                new Client
-                {
-                    ClientId = "IS3api",
-                    ClientName = "Web API mit IdentityServer 3",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = new List<Secret> {
-                        new Secret("superSecretPassword".Sha256())},
-                    // Secret wird über eine von IS4 gebotene extension method gehasht
-                    AllowedScopes = new List<string> {"customAPI.read"}
-                    // Als Scope wird hier ein selbst implementiertes aus der Klasse Resources verwendet
-                }
-```
-<h4>6.1.2. User</h4>
-<p></p>
-zwei User (alice und bob) mit pw alice und bob, besitzen jeweils User Claims, die über den Identity-Ressource Scope erreicht werden können.
-<h4>6.1.1- Clients</h4>
-<p>Identity- und Api-Ressourcen</p>
-<p>
-Alle Daten werden über das Identity Framework und einer SQLite Datenbank persisten gehalten. Beim Start des AuthServers werden alle Clients, Benutzer und Ressourcen in die Datenbank migriert, falls sie nicht bereits vorhanden sind.</p>
+<p> Im vorliegenden AuthServer-Projekt sind die Clients, User und Ressourcen vorkonfiguriert und werden jeweils aus bestehenden Klassen in eine SQLite Datenbank migriert. Der Autorisierungsserver ist mit dem IdentityServer 4 und damit auch für das .NET Core Framework implementiert. Um für den impliziten Fluss eine UI zu bieten, wurde das fertige <a href=https://github.com/IdentityServer/IdentityServer4.Quickstart.UI>Quickstart-Projekt von IdentityServer</a> verwendet.</p>
+<p>Der IdentityServer ist implementiert, als OWIN Middleware, ebenso wie die Request-Verarbeitung von ASP.NET (4 und Core) auf dem Prinzip der OWIN Middleware basiert. Der Einstiegspunkt für ein ASP.NET Programm ist die Klasse <i>Program</i>, in der unter anderem definiert ist, dass der AuthServer im IIS Express startet und als Einstiegspunkt die Klasse <i>Startup</i> verwendet. Aus der OWIN Middle ist bekannt, dass die initiale Methode, die ausgeführt wird, die Methode <i>Configure</i> ist.</p>
 
-<p>
-</p>
-<a href=https://github.com/IdentityServer/IdentityServer4.Quickstart.UI></a>
+```csharp
+public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+{
+      // Code ...
+}
+```
+          
+<p>An den <i>IApplicationBuilder</i> werden dann die auszuführenden Komponenten (Pipes) angegliedert und damit die Pipeline aufgebaut. Anmerkung: Die Reihenfolge, in der die Pipes im Code angefügt werden, entspricht exakt der Abarbeitungsreihenfolge der Komponenten in der Pipeline. Ein Request an den Server wird dann durch jede Komponente in der Pipeline gereicht und darin verarbeitet. Mittels der beiden Codezeilen</p>
+
+```csharp
+app.UseIdentity();
+app.UseIdentityServer();
+```
+
+<p>wird der IdentityServer in die Pipeline zur Verarbeitung eines Requests aufgenommen.</p>
+<p>Optional kann zusätzlich die Methode <i>ConfigureServices</i> implementiert werden, welche vor der <i>Configure</i>-Methode aufgerufen wird und erlaubt das Setzen von Konfigurationseigenschaften, bevor die Pipeline aufgebaut wird. Im AuthServer-Projekt wird darin die Migration der Client-, User- und Ressource-Daten in die SQLite Datenbank angestoßen und den IdentityServer zum Services-Container hinzugefügt (womit er in der Anwendung mittels Dependency-Injection erreicht werden kann) und die Datenbank definiert, auf der der IdentityServer operieren soll.</p>
+
+```csharp
+public void ConfigureServices(IServiceCollection services)
+        {
+          // Code ...
+          services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+          
+          // Code ...
+          services.AddIdentityServer()
+                .AddOperationalStore(
+                    builder => builder.UseSqlServer(connectionString, options =>   options.MigrationsAssembly(migrationsAssembly)))
+                .AddConfigurationStore(
+                    builder => builder.UseSqlServer(connectionString, options => options.MigrationsAssembly(migrationsAssembly)))
+                .AddAspNetIdentity<IdentityUser>()
+                .AddTemporarySigningCredential();
+        }
+```
+
+<p>Den Rest (Anfrageverarbeitung, Token-Erstellung usw.) erledigt der IdentityServer.</p>
+<p>Die Art, wie Anfragen verarbeitet werden, richtet sich nach den definierten Genehmigungsverfahren für den jeweiligen Client. Ebenso sind die möglichen zu erreichenden Ressourcen im AuthServer und die Benutzer registriert. Alle Daten werden über das ASP.NET Identity Framework und einer SQLite Datenbank persisten gehalten. Beim Start des AuthServers werden alle Clients, Benutzer und Ressourcen in die Datenbank migriert, falls sie nicht bereits vorhanden sind.</p>
+
+<h4>6.1.1. Clients</h4>
+<p>Die drei genannten Clients werden in der Klasse <i>AuthServer.InMemoryStores.Clients</i> definiert. Die Web API <i>WebAPIwithIS3</i> wird über die ID <i>IS3api</i> angesprochen, die <i>WebAPIwithIS4</i> über die ID <i>testApi</i> und die Client-Anwendung <i>ClientAppWithIS4</i> über die ID <i>openIdConnectClient</i>. NAchfolgende Tabelle gibt eine Übersicht über die konfigurierten Werte zu dem jeweiligen Client:</p>
+
+<table>
+  <tr>
+    <td><b>Client</b></td>
+    <td><b>ID</b></td>
+    <td><b>GrantType</b></td>
+    <td><b>Secret</b></td>
+    <td><b>Scopes</b></td>
+    <td><b>RedirectsUri</b></td>
+  </tr>
+  <tr>
+    <td>WebAPIwithIS3</td>
+    <td>IS3api</td>
+    <td>ClientCredentials</td>
+    <td>superSecretPassword</td>
+    <td>customAPI.read</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>WebAPIwithIS4</td>
+    <td>testApi</td>
+    <td>ResourceOwnerPassword</td>
+    <td>secret</td>
+    <td>OpenId Profile Email role customAPI.read</td>
+    <td>-</td>
+  </tr>
+    <tr>
+    <td>openIdConnectClient</td>
+    <td>openIdConnectClient</td>
+    <td>Implicit</td>
+    <td>-</td>
+    <td>OpenId Profile Email role customAPI</td>
+    <td>https://localhost:44342/signin-oidc</td>
+  </tr>
+</table>
+
+<h4>6.1.2. User</h4>
+<p>In der Klasse "TestUser" sind zwei Benutzer implementiert: Alice und Bob. Beide besitzen User-Claims, bestehend aus Name, E-Mail-Adresse, Website und Adresse. Die User-Claims können über den Identity-Ressource-Scope erreicht werden.</p>
+
+<h4>6.1.3 Ressourcen</h4>
+<p>Identity- und Api-Ressourcen</p>
+<p>In der <i>Startup</i>-Klasse sind die Scopes definiert, welche angefragt werden können. Für Identity-Ressource sind das</p>
+<ul>
+  <li>openid</li>
+  <li>profile</li>
+  <li>email</li>
+  <li>role</li>
+</ul>
+<p>Für die Api Ressource sind zusätzlich die beiden Scopes customAPI.read und customAPI.write definiert.</p>
 <div>
 
 </div>
