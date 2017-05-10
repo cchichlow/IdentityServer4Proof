@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 namespace ClientAppWithIS4.Controllers
 {
+    /// <summary>
+    /// Klasse zur Steuerung der verfügbaren Formulare
+    /// </summary>
     public class HomeController : Controller
     {
         public IActionResult Index()
@@ -22,6 +21,7 @@ namespace ClientAppWithIS4.Controllers
         }
 
         //Ressource, die nur authorisierten Benutzern vorenthalten ist
+        // Das Attribut [Authorize] triggert die Autorisierung mittels IdentityServer
         [Authorize]
         public IActionResult Contact()
         {
