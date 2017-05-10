@@ -1,10 +1,8 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using IdentityServer4.Models;
@@ -12,15 +10,12 @@ using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-
-using IdentityServer4.AspNetIdentity;
 using AuthServer.Migrations;
 using AuthServer.InMemoryStores;
 using Microsoft.AspNetCore.Identity;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityModel;
-using IdentityServer4.Configuration;
 
 namespace AuthServer
 {
@@ -30,6 +25,7 @@ namespace AuthServer
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // Migriere Clients, User und Ressourcen in die lokale SQLite-DB
             const string connectionString = @"Data Source=(LocalDb)\MSSQLLocalDB;database=IdServ4;trusted_connection=yes;";
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
