@@ -145,13 +145,13 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 </ul>
 <p>Der <b>AuthServer</b> ist ein OpenID Provider. Er führt Informationen zu allen registrierten Usern, den zu schützenden Ressourcen und den autorisierten Clients. Die <b>Client-Anwendung</b> ist eine Anwendung mit teilweise frei verfügbaren und teilweise über den AuthServer geschützten Ressourcen. Die <b>Web API</b> ist eine Schnittstelle, die den Zugriff auf geschützte Ressourcen ebenfalls über den AuthServer verwaltet. Ein Client, der Ressourcen bei der Web API anfragt, muss erst über den Autorisierungsserver autorisiert werden und erhält dann die benötigten Ressourcen.</p>
 <p>Alle Komponenten, außer der WebAPI mit IS3, sind nur auf dem .NET Core Framework lauffähig und können demnach auch nur mit der Visual Studio Version 2017 entwickelt werden. Abgesehen von denen, die mit Nerd-Vodoo ihre .NET Core Applikationen auch mit VS2015 zum Laufen bringen. (Ich hörte, das soll es geben...)</p>
-<p>Die Abbildung stellt schematisch die Kommunikation zwischen den Komponenten dar. Hierbei wurde die geschützte Ressource (Protected Ressource) separat dargestellt, wohingegen sie im Projekt immer in der Web API integriert ist. 
+<p>Die Abbildung stellt schematisch die Kommunikation zwischen den Komponenten dar. Hierbei ist die geschützte Ressource (Protected Ressource) separat dargestellt, wobei sie im Projekt immer in der Web API integriert ist. 
 </div>
 
 ![Kommunikation zwischen Entitäten](https://github.com/cchichlow/IdentityServer4Proof/blob/master/_img/Communication_IdServ4Proof_small.png)
 
 <div>
-<p>Im Abschnitt "OAuth kurz und knapp" wurden Genehmigungsverfahren beschrieben, von denen drei in diesem Projekt eingesetzt werden: implizite Genehmigung, Ressourceninhaber und Clientdaten. Jeder Client verwendet ein anderes Verfahren:</p>
+<p>Im Abschnitt "OAuth kurz und knapp" wurden Genehmigungsverfahren beschrieben, von denen drei in diesem Projekt eingesetzt werden: Implizit, Ressourceninhaber und Clientdaten. Jeder Client verwendet ein anderes Verfahren:</p>
 <table>
   <tr>
   <td><b>Client</b></td>
@@ -175,8 +175,97 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 
 </div>
 <br/><h3>6.1. AuthServer</h3>
-<p> Im AuthServer sind die Clients in der Klasse <i>Clients</i> implementiert. Er bietet der Web API die eben beschriebene Zugriffsmöglichkeit über die Benutzerdaten des Ressourceninhabers. Die Client-Anwendung greift über den impliziten Fluss auf die geschützten Ressourcen zu. Alle Daten werden über das Identity Framework und einer SQLite Datenbank persisten gehalten. Beim Start des AuthServers werden alle Clients, Benutzer und Ressourcen in die Datenbank migriert, falls sie nicht bereits vorhanden sind. 
-</p>
+<p> Im vorliegenden AuthServer-Projekt sind die Clients, User und Ressourcen vorkonfiguriert und werden jeweils aus bestehenden Klassen in eine SQLite Datenbank migriert. Der Autorisierungsserver ist mit dem IdentityServer 4 und damit auch für das .NET Core Framework implementiert. Um für den impliziten Fluss eine UI zu bieten, wurde das fertige <a href=https://github.com/IdentityServer/IdentityServer4.Quickstart.UI>Quickstart-Projekt von IdentityServer</a> verwendet.</p>
+<p>Der IdentityServer ist implementiert, als OWIN Middleware, ebenso wie die Request-Verarbeitung von ASP.NET (4 und Core) auf dem Prinzip der OWIN Middleware basiert. Der Einstiegspunkt für ein ASP.NET Programm ist die Klasse <i>Program</i>, in der unter anderem definiert ist, dass der AuthServer im IIS Express startet und als Einstiegspunkt die Klasse <i>Startup</i> verwendet. Aus der OWIN Middle ist bekannt, dass die initiale Methode, die ausgeführt wird, die Methode <i>Configure</i> ist.</p>
+
+```csharp
+public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+{
+      // Code ...
+}
+```
+          
+<p>An den <i>IApplicationBuilder</i> werden dann die auszuführenden Komponenten (Pipes) angegliedert und damit die Pipeline aufgebaut. Anmerkung: Die Reihenfolge, in der die Pipes im Code angefügt werden, entspricht exakt der Abarbeitungsreihenfolge der Komponenten in der Pipeline. Ein Request an den Server wird dann durch jede Komponente in der Pipeline gereicht und darin verarbeitet. Mittels der beiden Codezeilen</p>
+
+```csharp
+app.UseIdentity();
+app.UseIdentityServer();
+```
+
+<p>wird der IdentityServer in die Pipeline zur Verarbeitung eines Requests aufgenommen.</p>
+<p>Optional kann zusätzlich die Methode <i>ConfigureServices</i> implementiert werden, welche vor der <i>Configure</i>-Methode aufgerufen wird und erlaubt das Setzen von Konfigurationseigenschaften, bevor die Pipeline aufgebaut wird. Im AuthServer-Projekt wird darin die Migration der Client-, User- und Ressource-Daten in die SQLite Datenbank angestoßen und den IdentityServer zum Services-Container hinzugefügt (womit er in der Anwendung mittels Dependency-Injection erreicht werden kann) und die Datenbank definiert, auf der der IdentityServer operieren soll.</p>
+
+```csharp
+public void ConfigureServices(IServiceCollection services)
+        {
+          // Code ...
+          services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+          
+          // Code ...
+          services.AddIdentityServer()
+                .AddOperationalStore(
+                    builder => builder.UseSqlServer(connectionString, options =>   options.MigrationsAssembly(migrationsAssembly)))
+                .AddConfigurationStore(
+                    builder => builder.UseSqlServer(connectionString, options => options.MigrationsAssembly(migrationsAssembly)))
+                .AddAspNetIdentity<IdentityUser>()
+                .AddTemporarySigningCredential();
+        }
+```
+
+<p>Den Rest (Anfrageverarbeitung, Token-Erstellung usw.) erledigt der IdentityServer.</p>
+<p>Die Art, wie Anfragen verarbeitet werden, richtet sich nach den definierten Genehmigungsverfahren für den jeweiligen Client. Ebenso sind die möglichen zu erreichenden Ressourcen im AuthServer und die Benutzer registriert. Alle Daten werden über das ASP.NET Identity Framework und einer SQLite Datenbank persisten gehalten. Beim Start des AuthServers werden alle Clients, Benutzer und Ressourcen in die Datenbank migriert, falls sie nicht bereits vorhanden sind.</p>
+
+<h4>6.1.1. Clients</h4>
+<p>Die drei genannten Clients werden in der Klasse <i>AuthServer.InMemoryStores.Clients</i> definiert. Die Web API <i>WebAPIwithIS3</i> wird über die ID <i>IS3api</i> angesprochen, die <i>WebAPIwithIS4</i> über die ID <i>testApi</i> und die Client-Anwendung <i>ClientAppWithIS4</i> über die ID <i>openIdConnectClient</i>. NAchfolgende Tabelle gibt eine Übersicht über die konfigurierten Werte zu dem jeweiligen Client:</p>
+
+<table>
+  <tr>
+    <td><b>Client</b></td>
+    <td><b>ID</b></td>
+    <td><b>GrantType</b></td>
+    <td><b>Secret</b></td>
+    <td><b>Scopes</b></td>
+    <td><b>RedirectsUri</b></td>
+  </tr>
+  <tr>
+    <td>WebAPIwithIS3</td>
+    <td>IS3api</td>
+    <td>ClientCredentials</td>
+    <td>superSecretPassword</td>
+    <td>customAPI.read</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>WebAPIwithIS4</td>
+    <td>testApi</td>
+    <td>ResourceOwnerPassword</td>
+    <td>secret</td>
+    <td>OpenId Profile Email role customAPI.read</td>
+    <td>-</td>
+  </tr>
+    <tr>
+    <td>openIdConnectClient</td>
+    <td>openIdConnectClient</td>
+    <td>Implicit</td>
+    <td>-</td>
+    <td>OpenId Profile Email role customAPI</td>
+    <td>https://localhost:44342/signin-oidc</td>
+  </tr>
+</table>
+
+<h4>6.1.2. User</h4>
+<p>In der Klasse "TestUser" sind zwei Benutzer implementiert: Alice und Bob. Beide besitzen User-Claims, bestehend aus Name, E-Mail-Adresse, Website und Adresse. Die User-Claims können über den Identity-Ressource-Scope erreicht werden.</p>
+
+<h4>6.1.3 Ressourcen</h4>
+<p>Identity- und Api-Ressourcen</p>
+<p>In der <i>Startup</i>-Klasse sind die Scopes definiert, welche angefragt werden können. Für Identity-Ressource sind das</p>
+<ul>
+  <li>openid</li>
+  <li>profile</li>
+  <li>email</li>
+  <li>role</li>
+</ul>
+<p>Für die Api Ressource sind zusätzlich die beiden Scopes customAPI.read und customAPI.write definiert.</p>
 <div>
 
 </div>
