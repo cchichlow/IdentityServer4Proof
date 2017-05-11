@@ -8,13 +8,17 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using IdentityServer4;
 
-namespace AuthServer
+namespace AuthServer.InMemoryStores
 
 {
+    /// <summary>
+    /// Definiert Test-User mit entsprechenden User-Claims.
+    /// </summary>
     public class TestUsers
     {
         public static List<TestUser> Users = new List<TestUser>
         {
+            // Username und Password sind für Genehmigungsverfahren "ClientCredentials", "AuthorizationCode" und "Implizit" zu verwenden
             new TestUser{SubjectId = "818727", Username = "alice", Password = "alice", 
                 Claims = 
                 {

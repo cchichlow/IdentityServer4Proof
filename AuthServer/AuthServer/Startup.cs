@@ -1,12 +1,8 @@
-﻿
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using IdentityServer4.Models;
-using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -15,28 +11,29 @@ using AuthServer.InMemoryStores;
 using Microsoft.AspNetCore.Identity;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.EntityFramework.DbContexts;
-using IdentityModel;
 
 namespace AuthServer
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        // Diese Methode wird automatisch zur Laufzeit aufgerufen, bevor Configure-Methode aufgerufen wird.
+        /// <summary>
+        /// Ergänzt Service-Container um MVC-Service, Datenbankkontext, Identity-Kontext, IdentityServer.
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            // Migriere Clients, User und Ressourcen in die lokale SQLite-DB
+            // Datenbankkontext definieren
             const string connectionString = @"Data Source=(LocalDb)\MSSQLLocalDB;database=IdServ4;trusted_connection=yes;";
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-
-            
+                        
             services.AddMvc();
 
             // Registration for ASP.NET Identity DbContext
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
-
+            // Fügt den IdentitServer zu den Services hinzu, womit er in der Anwendung über Dependency Injection verwendbar gemacht wird.
             services.AddIdentityServer()
                 .AddOperationalStore(
                     builder => builder.UseSqlServer(connectionString, options => options.MigrationsAssembly(migrationsAssembly)))
@@ -47,16 +44,25 @@ namespace AuthServer
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
+        /// <param name="loggerFactory"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            // Konsolenausgabe hinzufügen
             loggerFactory.AddConsole();
 
             app.UseDeveloperExceptionPage();
 
+            // User, Clients und Ressourcen in DB migrieren, falls nicht vorhanden
             InitializeDbTestData(app);
 
+            // Identity zur Pipeline hinzufügen, um User zu verwalten
             app.UseIdentity();
+            // IdentityServer zur Pipeline hinzufügen, um Authentifizierungs- und Autorisierungsmechanismen zu integrieren
             app.UseIdentityServer();
 
             
@@ -64,6 +70,10 @@ namespace AuthServer
             app.UseMvcWithDefaultRoute();
         }
 
+        /// <summary>
+        /// Migriert Clients, User und Ressourcen in die lokale SQLite Datenbank.
+        /// </summary>
+        /// <param name="app"></param>
         private static void InitializeDbTestData(IApplicationBuilder app)
         {
             using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
@@ -74,6 +84,7 @@ namespace AuthServer
 
                 var context = scope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
 
+                // Client in DB migrieren
                 if (!context.Clients.Any())
                 {
                     foreach (var client in Clients.Get())
@@ -83,29 +94,31 @@ namespace AuthServer
                     context.SaveChanges();
                 }
 
+                // Identity-Ressourcen in DB migrieren
                 if (!context.IdentityResources.Any())
                 {
-                    foreach (var resource in Resources.GetIdentityResources())
+                    foreach (var resource in InMemoryStores.Resources.GetIdentityResources())
                     {
                         context.IdentityResources.Add(resource.ToEntity());
                     }
                     context.SaveChanges();
                 }
 
+                // Api-Ressourcen in DB migrieren
                 if (!context.ApiResources.Any())
                 {
-                    foreach (var resource in Resources.GetApiResources())
+                    foreach (var resource in InMemoryStores.Resources.GetApiResources())
                     {
                         context.ApiResources.Add(resource.ToEntity());
                     }
                     context.SaveChanges();
                 }
 
+                // User werden über das Identity Framework verwaltet
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
                 if (!userManager.Users.Any())
                 {
-                    foreach (var testUser in AuthServer.TestUsers.Users)
+                    foreach (var testUser in AuthServer.InMemoryStores.TestUsers.Users)
                     {
                         var identityUser = new IdentityUser(testUser.Username)
                         {
@@ -121,66 +134,10 @@ namespace AuthServer
                                 ClaimValue = claim.Value,
                             });
                         }
-
-                        userManager.CreateAsync(identityUser, "Password123!").Wait();
+                        userManager.CreateAsync(identityUser, testUser.Password).Wait();
                     }
                 }
             }
-        }
-    }
-
-    internal class Resources
-    {
-        public static IEnumerable<IdentityResource> GetIdentityResources()
-        {
-            return new List<IdentityResource> {
-                    new IdentityResources.OpenId(), //Wird immer für OpenID Connect Flows benötigt
-                    new IdentityResources.Profile(),
-                    new IdentityResources.Email(),
-                    new IdentityResource {
-                        Name = "role",
-                        UserClaims = new List<string> {"role"}
-                     }
-                 };
-        }
-
-        public static IEnumerable<ApiResource> GetApiResources()
-        {
-            return new List<ApiResource> {
-                    new ApiResource {
-                        Name = "customAPI",
-                        DisplayName = "Custom API",
-                        Description = "Custom API Access",
-                        // Weil Claim "role" im Scope gesetzt ist, wird der Claim jedem Token hinzugefügt, der diesen Scope hat
-                        UserClaims = new List<string> {"role"},
-                        ApiSecrets = new List<Secret> {new Secret("scopeSecret".Sha256())},
-                        Scopes = new List<Scope> {
-                            new Scope("customAPI.read"),
-                            new Scope("customAPI.write")
-                        }
-                    }
-                 };
-        }
-    }
-
-
-
-    internal class Users
-    {
-        public static List<IdentityServer4.Test.TestUser> Get()
-        {
-            return new List<IdentityServer4.Test.TestUser> {
-                new IdentityServer4.Test.TestUser {
-                    SubjectId = "5BE86359-073C-434B-AD2D-A3932222DABE",
-                    Username = "scott",
-                    Password = "password",
-                    Claims = new List<Claim> {
-                        new Claim(JwtClaimTypes.Email, "scott@scottbrady91.com"),
-                        new Claim(JwtClaimTypes.Role, "admin")
-                    }
-                }
-            };
-
         }
     }
 }
