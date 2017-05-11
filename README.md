@@ -10,6 +10,7 @@ Proof of concept for Authentication and Authorization with IdentityServer 4
   <li>Crashkurs: OAuth 2.0 und OpenID Connect</li>
   <li>IdentityServer - Tanz der Versionen</li>
   <li>Das Projekt</li>
+  <li>Get Started</li>
 </ol>
 </div>
 
@@ -171,9 +172,9 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
   </tr>
 </table>
 <p>Nachfolgend wird jede Komponente einzeln in Hinblick auf ihre Implementierung detaillierter betrachtet.</p>
-<div>
-
 </div>
+
+<div>
 <br/><h3>6.1. AuthServer</h3>
 <p> Im vorliegenden AuthServer-Projekt sind die Clients, User und Ressourcen vorkonfiguriert und werden jeweils aus bestehenden Klassen in eine SQLite Datenbank migriert. Der Autorisierungsserver ist mit dem IdentityServer 4 und damit auch für das .NET Core Framework implementiert. Um für den impliziten Fluss eine UI zu bieten, wurde das fertige <a href=https://github.com/IdentityServer/IdentityServer4.Quickstart.UI>Quickstart-Projekt von IdentityServer</a> verwendet.</p>
 <p>Der IdentityServer ist implementiert, als OWIN Middleware, ebenso wie die Request-Verarbeitung von ASP.NET (4 und Core) auf dem Prinzip der OWIN Middleware basiert. Der Einstiegspunkt für ein ASP.NET Programm ist die Klasse <i>Program</i>, in der unter anderem definiert ist, dass der AuthServer im IIS Express startet und als Einstiegspunkt die Klasse <i>Startup</i> verwendet. Aus der OWIN Middle ist bekannt, dass die initiale Methode, die ausgeführt wird, die Methode <i>Configure</i> ist.</p>
@@ -266,15 +267,15 @@ public void ConfigureServices(IServiceCollection services)
   <li>role</li>
 </ul>
 <p>Für die Api Ressource sind zusätzlich die beiden Scopes customAPI.read und customAPI.write definiert.</p>
-<div>
-
 </div>
+
+<div>
 <br/><h3>6.2. ClientAppWithIS4</h3>
 <p>Die Client-Anwendung ist ein initiales, mit Visual Studio 2017 erstelltes und modifiziertes ASP.NET Projekt für Webanwendungen. Die geschützte Ressource ist das Kontak-Formular. Mit einem Klick auf das Formular wird der Anwender auf die Login-Seite des Autorisierungsserver weitergeleitet und kann darin die Client-Anwendung autorisieren. Anschließend ist der Zugriff auf die Kontakt-Daten erlaubt.
 </p>
-<div>
-
 </div>
+
+<div>
 <br/><h3>6.3. WebAPIwithIS4</h3>
 <p>Die Web API ist ein initiales, mit Visual Studio 2017 erstelltes und modifiziertes ASP.NET Projekt für Webschnittstellen. Die geschützte Ressource ist exemplarisch das Value-Objekt, welches eingangs zu Beispielzwecken mit dem Projekt erstellt wird. Der Zugriff erfolgt über die Benutzerdaten, indem zunächst ein Post-Request an den Autorisierungsserver gesendet wird, um ein Access Token zu erhalten. Der Content-Type Parameter im Header der Anfrage muss den Wert "x-www-form-urlencoded" haben. Außerdem müssen folgende Paramter im Body der Anfrage enthalten sein:</p>
 <ul>
@@ -298,11 +299,15 @@ scope : openID<br/>
 Der Grant-Type entspricht dem Ressource-Owner Genehmigungsverfahren, welches im Autorisierungsserver für diesen Client definiert ist. Auch die Client-ID und das Client-Secret sind im Autorisierungsserver hinterlegt. Der Scope gibt an, auf welche Ressourcen der Client zugreifen möchte. Die möglichen Scopes sind im Autorisierungsserver definiert. Der Benutzername und das Passwort für den Benutzer sind im Falle des Ressource-Owner Genehmigungsverfahrens ebenfalls im Autorisierungsserver hinterlegt.
 Als Antwort erhält man ein Access Token, mit dem man die Ressourcen an der Web API anfragen kann. Die Web API prüft den Access Token beim Autorisierungsserver und gibt bei einem validen Access Token die gewünschten Ressourcen zurück.
 </p>
-<div>
-
 </div>
+
+<div>
 <br/><h3>6.4. WebAPIwithIS3</h3>
 <p>Aber sind wir damit nicht wieder auf dem Level der Unsicherheit, bei dem wir die eingangs genannten Vorteile von OAuth über Bord werfen? Nein. Denn die Benutzerdaten werden nur ein mal an den Autorisierungsserver gesendet und ein Token im Gegenzug erhalten. Der Client muss damit die Benutzerdaten nicht persistent speichern, sondern nur den Token. Außerdem bleiben mit dem Token auch die Vorteile der begrenzente und verwaltbaren Zugriffe erhalten.
 </p>
+</div>
 
+<div>
+<h2>7. Get started</h2>
+<p>Um das Projekt auszuprobieren, muss zunächst der AuthServer gestartet werden. Unter Umständen kann es sein, dass Ausnahmeregeln im Browser für den AuthServer definiert werden müssen, damit er richtig funktioniert. Anschließend kann jeder der Clients separat gestartet werden. Die Client Anwendung <b>ClientAppWithIS4</b> öffnet sich im Browser. Die geschützte Ressource ist das Kontaktformular, welches über einen Click auf den Reiter "Contact" der Website angefragt wird. Dabei wird das implizite Genehemigungsverfahren für die Autorisierung angestoßen und der Anwender auf die Login-Seite des AuthServers (geboten durch das erwähnte "Quickstart"-Projekt von IdentityServer) weitergeleitet. Dort kann der den Client durch ein Login und ein anschließendes Formular, in dem die Scopes für die Autorisierung definiert werden, den Client autorisieren und wird wieder an diesen zurückgeleitet. Die <b>beiden WebAPIs</b> besitzen jeweils einen Test-Client, über den man den Zugriff auf die API simuliert. Dabei muss die jeweilige API, sowie der Client gestartet sein.</p>
 </div>
