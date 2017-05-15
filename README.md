@@ -112,7 +112,7 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 <div>
 <p>Obwohl die Technologien für Authentifizierung und Autorisierung mit den genannten Standards einheitlich definiert sind, bleibt ein ernormer Aufwand für die Implementierung einer sicheren Architektur nach OAuth 2.0 und OpenID Connect ein enormer Aufwand. Es liegt im Interesse eines Softwareentwicklers, der die Funktionen lediglich verwenden und nicht erst implementieren möchte, ein Framework zu verwenden, welches ihm die Arbeit abnimmt.</p>
 <p>Damit wird unter anderem eine einfache Umsetzung von Single-Sign-On und Zugriffsbeschränkungen für Webapplikationen und -schnittstellen ermöglicht.</p>
-<p>OpenID Connect (und damit implizit auch OAuth 2.0) ist vielfältig und in unterschiedlichen Sprachen implementiert. Im .NET Umfeld ist das am häufigsten Verwendete Framework der IdentityServer von Thinktecture. Die neueste Version, der IdentityServer 4, ist seit Ende 2016 auf dem Markt.</p>
+<p>OpenID Connect (und damit implizit auch OAuth 2.0) ist vielfältig und in unterschiedlichen Sprachen implementiert. Im .NET Umfeld ist das am häufigsten Verwendete Framework der IdentityServer. Die neueste Version, der IdentityServer 4, ist seit Ende 2016 auf dem Markt.</p>
 
 <p><b>TODO</b>: Endpoints. /.well-known/openid-configuration, /connect/token </p>
 </div>
@@ -128,7 +128,7 @@ Beim Verfahren Clientdaten ist ein Client im Autorisierungsserver registriert un
 <br/>der hat sich geirrt, denn der IdentityServer in der <b>Version 4 ist nur für das .NET Core</b> Framework verfügbar.
 <br/>Dies stellt eine entscheidende Einschränkung dar, ist doch das .NET Core Framework eine neue Technologie, die eben ihre ersten Schritte auf dem Boden des .NET Ökosystems macht. An vielen Stellen ist es fehlerhaft oder unvollständig, niemand kann genaue Aussagen über die zukunftsfähigkeit machen und der Umbau bestehender Applikationen, um den IdentityServer4 einzubinden, birgt einen hohen Aufwand. Trotzdem ist dieses Projekt ausschließlich mit IdentityServer4 und auf dem .NET Core Framework umgesetzt.
 <br/>Ist das nicht ziemlich widersprüchlich und dumm?
-<br/>Nein. Denn Thinktecture verspricht mit dem IdentityServer 4 eine Abwärtskompatibiliät zur Version 3, womit bestehende Webschnittstellen auf dem .NET Standard Framework bleiben können und trotzdem mit einem OpenID Provider für .NET Core ihre Ressourcen schützen können. Dies ist in diesem Projekt mit der Komponente "WebAPIwithIS3" geprüft und bestätigt worden.</p>
+<br/>Nein. Die Erschaffer des IdentityServer 4 versprechen eine Abwärtskompatibiliät zur Version 3, womit bestehende Webschnittstellen auf dem .NET Standard Framework bleiben können und trotzdem mit einem OpenID Provider für .NET Core ihre Ressourcen schützen können. Dies ist in diesem Projekt mit der Komponente "WebAPIwithIS3" geprüft und bestätigt worden.</p>
 </div>
 
 
